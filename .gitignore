@@ -127,3 +127,184 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+## Core latex/pdflatex auxiliary files:
+paper/*.aux
+paper/*.lof
+paper/*.log
+paper/*.lot
+paper/*.fls
+paper/*.out
+paper/*.toc
+paper/*.fmt
+paper/*.fot
+paper/*.cb
+*.cb2
+
+## Intermediate documents:
+paper/*.dvi
+paper/*-converted-to.*
+# these rules might exclude image files for figures etc.
+# *.ps
+# *.eps
+# *.pdf
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*-blx.aux
+paper/*-blx.bib
+paper/*.brf
+paper/*.run.xml
+
+## Build tool auxiliary files:
+paper/*.fdb_latexmk
+paper/*.synctex
+paper/*.synctex.gz
+paper/*.synctex.gz(busy)
+paper/*.pdfsync
+
+## Auxiliary and intermediate files from other packages:
+# algorithms
+paper/*.alg
+paper/*.loa
+
+# achemso
+paper/acs-*.bib
+
+# amsthm
+paper/*.thm
+
+# beamer
+paper/*.nav
+paper/*.snm
+paper/*.vrb
+
+# cprotect
+paper/*.cpt
+
+# fixme
+paper/*.lox
+
+#(r)(e)ledmac/(r)(e)ledpar
+paper/*.end
+paper/*.?end
+paper/*.[1-9]
+paper/*.[1-9][0-9]
+paper/*.[1-9][0-9][0-9]
+paper/*.[1-9]R
+paper/*.[1-9][0-9]R
+paper/*.[1-9][0-9][0-9]R
+paper/*.eledsec[1-9]
+paper/*.eledsec[1-9]R
+paper/*.eledsec[1-9][0-9]
+paper/*.eledsec[1-9][0-9]R
+paper/*.eledsec[1-9][0-9][0-9]
+paper/*.eledsec[1-9][0-9][0-9]R
+
+# glossaries
+paper/*.acn
+paper/*.acr
+paper/*.glg
+paper/*.glo
+paper/*.gls
+paper/*.glsdefs
+
+# gnuplottex
+paper/*-gnuplottex-*
+
+# hyperref
+paper/*.brf
+
+# knitr
+paper/*-concordance.tex
+# TODO Comment the next line if you want to keep your tikz graphics files
+paper/*.tikz
+paper/*-tikzDictionary
+
+# listings
+paper/*.lol
+
+# makeidx
+paper/*.idx
+paper/*.ilg
+paper/*.ind
+paper/*.ist
+
+# minitoc
+paper/*.maf
+paper/*.mlf
+paper/*.mlt
+paper/*.mtc
+paper/*.mtc[0-9]
+paper/*.mtc[1-9][0-9]
+
+# minted
+paper/_minted*
+paper/*.pyg
+
+# morewrites
+paper/*.mw
+
+# mylatexformat
+paper/*.fmt
+
+# nomencl
+paper/*.nlo
+
+# sagetex
+paper/*.sagetex.sage
+paper/*.sagetex.py
+paper/*.sagetex.scmd
+
+# sympy
+paper/*.sout
+paper/*.sympy
+paper/sympy-plots-for-*.tex/
+
+# pdfcomment
+paper/*.upa
+paper/*.upb
+
+# pythontex
+paper/*.pytxcode
+paper/pythontex-files-*/
+
+# thmtools
+paper/*.loe
+
+# TikZ & PGF
+paper/*.dpth
+paper/*.md5
+paper/*.auxlock
+
+# todonotes
+paper/*.tdo
+
+# xindy
+paper/*.xdy
+
+# xypic precompiled matrices
+paper/*.xyc
+
+# endfloat
+paper/*.ttt
+paper/*.fff
+
+# Latexian
+paper/TSWLatexianTemp*
+
+## Editors:
+# WinEdt
+paper/*.bak
+paper/*.sav
+
+# Texpad
+paper/.texpadtmp
+
+# Kile
+paper/*.backup
+
+# KBibTeX
+paper/*~[0-9]*
