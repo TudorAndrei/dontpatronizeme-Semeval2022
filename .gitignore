@@ -308,3 +308,4 @@ paper/*.backup
 
 # KBibTeX
 paper/*~[0-9]*
+numberbatch-en-19.08.txt.gz
