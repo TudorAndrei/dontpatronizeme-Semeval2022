@@ -309,3 +309,7 @@ paper/*.backup
 # KBibTeX
 paper/*~[0-9]*
 numberbatch-en-19.08.txt.gz
+task2/Session.vim
+task2/tb_logs/
+task2/lightning_logs/
+.vscode/
