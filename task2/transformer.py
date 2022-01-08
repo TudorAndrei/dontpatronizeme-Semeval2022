@@ -43,13 +43,13 @@ class BertTransfomer(LightningModule):
         self.log("train/loss", loss, prog_bar=True, on_epoch=True, on_step=False)
         return loss
 
-    # def validation_step(self, batch, _):
-    #     ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
-    #     output = self(ids, mask)
-    #     output = torch.argmax(output, dim=1).float()
-    #     loss = self.criterion(output, labels)
-    #     return {"loss": loss}
+    def validation_step(self, batch, _):
+        ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
+        output = self(ids, mask)
+        output = torch.argmax(output, dim=1).float()
+        loss = self.criterion(output, labels)
+        return {"loss": loss}
 
-    # def validation_epoch_end(self, out):
-    #     loss = torch.stack([x["loss"] for x in out]).mean()
-    #     self.log("val/val_loss", loss, on_epoch=True, on_step=False)
+    def validation_epoch_end(self, out):
+        loss = torch.stack([x["loss"] for x in out]).mean()
+        self.log("val/val_loss", loss, on_epoch=True, on_step=False)

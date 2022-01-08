@@ -1,4 +1,4 @@
-from data_utils import get_dataloaders
+from data_utils import DPMDataModule, get_dataloaders
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
@@ -10,7 +10,7 @@ NW = 8
 EPOCHS = 5
 
 if __name__ == "__main__":
-    train = get_dataloaders(num_workers=NW, batch_size=BATCH_SIZE)
+    data = DPMDataModule()
     model_name = "bert"
     model = BertTransfomer()
     logger = TensorBoardLogger("tb_logs", name=f"{model_name}")
@@ -33,4 +33,4 @@ if __name__ == "__main__":
             # EarlyStopping(monitor="val/val_loss", patience=6),
         ],
     )
-    trainer.fit(model, train_dataloaders=train)
+    trainer.fit(model, data)
