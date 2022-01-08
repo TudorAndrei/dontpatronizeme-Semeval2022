@@ -55,14 +55,13 @@ class DPMDataset_extended(Dataset):
         self.tokenizer = AutoTokenizer.from_pretrained(
             "Hate-speech-CNERG/bert-base-uncased-hatexplain"
         )
-        self.max_len = 100
+        self.max_len = 512
         self.data = pd.read_csv(path)
 
     def __getitem__(self, index):
-        text = self.data.loc[index, 'text']
-        labels = self.data.loc[index, 'label_x']
+        text = self.data.loc[index, "text"]
+        labels = self.data.loc[index, "label_x"]
         labels = literal_eval(labels.replace(" ", ","))
-
         text = self.tokenizer.encode_plus(
             text,
             None,

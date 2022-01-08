@@ -16,8 +16,8 @@ class BertTransfomer(LightningModule):
             "Hate-speech-CNERG/bert-base-uncased-hatexplain"
         ).bert
 
-        # for param in self.bert.parameters():
-        #     param.require_grad = False
+        for param in self.bert.parameters():
+            param.require_grad = True
 
         self.classifier = Linear(
             in_features=768, out_features=self.n_classes, bias=True
@@ -30,7 +30,7 @@ class BertTransfomer(LightningModule):
         return out
 
     def configure_optimizers(self):
-        optimizer = Adam(self.parameters(), lr=self.lr)
+        optimizer = Adam(self.classifier.parameters(), lr=self.lr)
         return {
             "optimizer": optimizer,
         }

@@ -4,22 +4,23 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from transformer import BertTransfomer
-
-BATCH_SIZE = 8
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+BATCH_SIZE = 1
 NW = 8
 EPOCHS = 5
 
 if __name__ == "__main__":
-    data = DPMDataModule()
+    data = DPMDataModule(batch_size=BATCH_SIZE, num_workers=NW)
     model_name = "bert"
     model = BertTransfomer()
-    logger = TensorBoardLogger("tb_logs", name=f"{model_name}")
+    # logger = TensorBoardLogger("tb_logs", name=f"{model_name}")
 
     trainer = Trainer(
         detect_anomaly=True,
         gpus=1,
-        enable_model_summary=False,
-        logger=logger,
+        enable_model_summary=True,
+        # logger=logTrueger,
         log_every_n_steps=BATCH_SIZE,
         max_epochs=EPOCHS,
         callbacks=[
