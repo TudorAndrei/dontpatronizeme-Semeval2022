@@ -1,10 +1,11 @@
-# 0.21 F1 score
+# 0.31 F1 score, 0.78 Accuracy
 import csv
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.metrics import f1_score, accuracy_score
 import tensorflow as tf
+import tensorflow_hub as hub
 
 lemmatizer = WordNetLemmatizer()
 english_stopwords = stopwords.words('english')
@@ -104,18 +105,13 @@ def get_model():
     VOCAB_SIZE = 1000
     encoder = tf.keras.layers.TextVectorization(max_tokens=VOCAB_SIZE, output_mode="int")
     encoder.adapt(train_dataset.map(lambda text, label: text))
-    model = tf.keras.Sequential([
-        encoder,
-        tf.keras.layers.Embedding(
-            input_dim=len(encoder.get_vocabulary()),
-            output_dim=256,
-            # Use masking to handle the variable sequence lengths
-            mask_zero=True),
-        tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(256)),
-        tf.keras.layers.Dense(512, activation='relu'),
-        tf.keras.layers.Dense(512, activation='relu'),
-        tf.keras.layers.Dense(512, activation='relu'),
-        tf.keras.layers.Dense(512, activation='relu'),
+    hub_layer = hub.KerasLayer("https://tfhub.dev/google/universal-sentence-encoder/4", input_shape=[],
+                               output_shape=[512, 16],
+                               dtype=tf.string, trainable=True)
+    model = tf.keras.models.Sequential([
+        hub_layer,
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(2)
     ])
     model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
