@@ -3,7 +3,7 @@ import csv
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 import tensorflow as tf
 
 lemmatizer = WordNetLemmatizer()
@@ -155,5 +155,4 @@ for q in range(0, len(test_data)):
             break
     predicted_labels.append(int(predicted_label))
 print(f'F1 score for validation is {f1_score(test_labels, predicted_labels)}')
-# print(predicted_labels)
-# print(test_labels)
+print(f'Accuracy score for validation is {accuracy_score(test_labels, predicted_labels)}')
