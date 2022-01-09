@@ -20,6 +20,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.metrics import f1_score, accuracy_score
 import tensorflow as tf
 import tensorflow_hub as hub
+from matplotlib import pyplot as plt
 
 lemmatizer = WordNetLemmatizer()
 english_stopwords = stopwords.words('english')
@@ -131,7 +132,15 @@ train_examples = np.array(train_examples)
 train_labels = np.array(train_labels).astype('float32')
 
 model = get_model()
-model.fit(train_examples, train_labels, batch_size=64, epochs=10)
+history = model.fit(train_examples, train_labels, batch_size=64, epochs=10)
+
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['loss'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['accuracy', 'loss'], loc='upper left')
+plt.show()
 
 predicted_labels = []
 window = avg_pos_len * 2
