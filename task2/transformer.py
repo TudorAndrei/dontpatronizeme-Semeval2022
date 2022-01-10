@@ -1,36 +1,42 @@
 import pretty_errors
 import torch
 from pytorch_lightning import LightningModule
-from torch.nn import Linear
+from torch.nn import Linear, Sequential
 from torch.nn.modules.loss import BCEWithLogitsLoss
 from torch.optim import Adam
+from torchmetrics.functional import f1
 from transformers.models.auto.modeling_auto import AutoModelForSequenceClassification
 
 
 class BertTransfomer(LightningModule):
-    def __init__(self) -> None:
+    def __init__(self, model) -> None:
         super().__init__()
         self.n_classes = 7
-        self.lr = 0.003
-        self.bert = AutoModelForSequenceClassification.from_pretrained(
-            "Hate-speech-CNERG/bert-base-uncased-hatexplain"
-        ).bert
+        self.lr = 0.001
+        self.model = AutoModelForSequenceClassification.from_pretrained(model)
 
-        # for param in self.bert.parameters():
-        #     param.require_grad = False
+        self.bert = self.model.bert
+        # self.bert = self.model.distilbert
 
-        self.classifier = Linear(
-            in_features=768, out_features=self.n_classes, bias=True
+        for param in self.bert.parameters():
+            param.requires_grad = False
+
+        self.classifier = Sequential(
+            Linear(in_features=768, out_features=32, bias=True),
+            Linear(in_features=32, out_features=self.n_classes, bias=True),
+
         )
         self.criterion = BCEWithLogitsLoss()
 
     def forward(self, ids, mask):
         out = self.bert(input_ids=ids, attention_mask=mask)
-        out = self.classifier(out[0])
+        out = out[0]
+        out = out[:, 0]
+        out = self.classifier(out)
         return out
 
     def configure_optimizers(self):
-        optimizer = Adam(self.parameters(), lr=self.lr)
+        optimizer = Adam(self.classifier.parameters(), lr=self.lr)
         return {
             "optimizer": optimizer,
         }
@@ -38,7 +44,7 @@ class BertTransfomer(LightningModule):
     def training_step(self, batch, _):
         ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
         output = self(ids, mask)
-        output = torch.argmax(output, dim=1).float()
+        # labels = torch.squeeze(labels)
         loss = self.criterion(output, labels)
         self.log("train/loss", loss, prog_bar=True, on_epoch=True, on_step=False)
         return loss
@@ -46,10 +52,12 @@ class BertTransfomer(LightningModule):
     def validation_step(self, batch, _):
         ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
         output = self(ids, mask)
-        output = torch.argmax(output, dim=1).float()
         loss = self.criterion(output, labels)
-        return {"loss": loss}
+        f1_score = f1(output, labels.int(), average="macro", num_classes=7)
+        return {"loss": loss, "f1": f1_score}
 
     def validation_epoch_end(self, out):
         loss = torch.stack([x["loss"] for x in out]).mean()
+        f1_score = torch.stack([x["f1"] for x in out]).mean()
         self.log("val/val_loss", loss, on_epoch=True, on_step=False)
+        self.log("val/val_f1", f1_score, on_epoch=True, on_step=False)
