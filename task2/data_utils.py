@@ -70,3 +70,11 @@ class DPMDataModule(LightningDataModule):
             num_workers=self.num_workers,
             shuffle=False,
         )
+
+    def test_dataloader(self):
+        return DataLoader(
+            self.dpm_val,
+            batch_size=8,
+            num_workers=self.num_workers,
+            shuffle=False,
+        )

@@ -12,7 +12,7 @@ from whos_there.senders.discord import DiscordSender
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 BATCH_SIZE = 8
 NW = 8
-EPOCHS = 50
+EPOCHS = 100
 
 web_hook = "https://discord.com/api/webhooks/929728317408571452/rDR6JgNQkEKhAGWDckVtUQWB-DZh2Nqpv3rfWrU1ziFoeX37iPAG-CLU0O_n1wlakPp-"
 
@@ -23,8 +23,8 @@ model_config = {
 }
 
 if __name__ == "__main__":
-    model = model_config['hatexplain']
-    # model = model_config["distillbert"]
+    # model = model_config['hatexplain']
+    model = model_config["distillbert"]
     data = DPMDataModule(batch_size=BATCH_SIZE, num_workers=NW, model=model)
     model_name = "bert"
     model = BertTransfomer(model=model)
@@ -55,4 +55,5 @@ if __name__ == "__main__":
             EarlyStopping(monitor="val/val_loss", patience=6),
         ],
     )
-    trainer.fit(model, data)
+    trainer.fit(model, datamodule=data)
+    trainer.test(model, datamodule=data, ckpt_path="best")

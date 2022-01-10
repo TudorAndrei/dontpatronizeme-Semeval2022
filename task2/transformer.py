@@ -15,8 +15,8 @@ class BertTransfomer(LightningModule):
         self.lr = 0.001
         self.model = AutoModelForSequenceClassification.from_pretrained(model)
 
-        self.bert = self.model.bert
-        # self.bert = self.model.distilbert
+        # self.bert = self.model.bert
+        self.bert = self.model.distilbert
 
         for param in self.bert.parameters():
             param.requires_grad = False
@@ -24,7 +24,6 @@ class BertTransfomer(LightningModule):
         self.classifier = Sequential(
             Linear(in_features=768, out_features=32, bias=True),
             Linear(in_features=32, out_features=self.n_classes, bias=True),
-
         )
         self.criterion = BCEWithLogitsLoss()
 
@@ -61,3 +60,16 @@ class BertTransfomer(LightningModule):
         f1_score = torch.stack([x["f1"] for x in out]).mean()
         self.log("val/val_loss", loss, on_epoch=True, on_step=False)
         self.log("val/val_f1", f1_score, on_epoch=True, on_step=False)
+
+    def test_step(self, batch, _):
+        ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
+        output = self(ids, mask)
+        f1_score = f1(output, labels.int(), average="none", num_classes=7)
+        return {"f1": f1_score}
+
+    def test_epoch_end(self, out):
+        f1_score = torch.stack([x["f1"] for x in out]).mean(dim=0).mean()
+        f1_scores = torch.stack([x["f1"] for x in out]).mean(dim=0)
+        results = {"f1_score ": f1_score, "f1_scores": f1_scores}
+        print(results)
+        self.log("results", results)
