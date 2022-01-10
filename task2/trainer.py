@@ -10,7 +10,7 @@ from whos_there.callback import NotificationCallback
 from whos_there.senders.discord import DiscordSender
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-BATCH_SIZE = 8
+BATCH_SIZE = 4
 NW = 8
 EPOCHS = 100
 
@@ -23,8 +23,8 @@ model_config = {
 }
 
 if __name__ == "__main__":
-    # model = model_config['hatexplain']
-    model = model_config["distillbert"]
+    model = model_config['hatexplain']
+    # model = model_config["distillbert"]
     data = DPMDataModule(batch_size=BATCH_SIZE, num_workers=NW, model=model)
     model_name = "bert"
     model = BertTransfomer(model=model)

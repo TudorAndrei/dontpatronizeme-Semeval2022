@@ -15,8 +15,8 @@ class BertTransfomer(LightningModule):
         self.lr = 0.001
         self.model = AutoModelForSequenceClassification.from_pretrained(model)
 
-        # self.bert = self.model.bert
-        self.bert = self.model.distilbert
+        self.bert = self.model.bert
+        # self.bert = self.model.distilbert
 
         for param in self.bert.parameters():
             param.requires_grad = False
