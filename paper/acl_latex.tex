@@ -236,6 +236,19 @@ text as PCL.
 
 \item Subtask 2 (Multiclass Classification)
 
+Considering the fact that the vocabulary of the is English only, we have tried
+to leverage power of pretrained language models. Therefore we have chosen 3
+bert-based models which were pretrained for hatespeech detection and sentiment analysis:
+
+\begin{itemize}
+
+    \item Bert HateXplain \cite{mathew2020hatexplain}: This model was trained to classify text as Hatespeech, Offensive or Normal.
+        It was trained on Gab, Twitter and Humain Rationale;
+    \item Distil Bert \cite{?}: This model is a version of Distilled bert finetuned on the Twitter dataset;
+    \item Distill RoBERTa \cite{?}: This model is a verion of Distilled RoBERTa finetuned on the Twitter dataset;
+
+\end{itemize}
+
 % TODO:
 
 \end{enumerate}
@@ -246,30 +259,41 @@ text as PCL.
 
 \section{Results}
 
+\begin{table}[]
+    \centering
+    \begin{tabular}{scale=.9\linewidth}
+        \hline
+        Model & UPR & SHA & PRE & AUT  \\
+        \hline
+        Bert & 0.82 & 0.0 & 0.0 & 0.0 \\
+        \hline
+        DistilRoberta & 0.83 & 0.0 & 0.0 & 0.0 \\
+        \hline
+        DistilBert & 0.79 & 0.0 & 0.0 & 0.0 \\
+        \hline
+        \hline
+        Model &  MET & COM & TPTM & F1-Mean \\
+        \hline
+        Bert &  0.0 & 0.0 & 0.64 & 0.0 \\
+        \hline
+        DistilRoberta &  0.0 & 0.0 & 0.59 & 0.0 \\
+        \hline
+        DistilBert &  0.0 & 0.12 & 0.64 & 0.0 \\
+        \hline
+    \end{tabular}
+    \caption{F1 Scores across the categories}
+    \label{tab:results}
+\end{table}
 
 % TODO:
 
 
-
-Main quantitative findings: How well did your system perform at the task
-according to official metrics? How does it rank in the competition?
-
-Quantitative analysis: Ablations or other comparisons of different design
-decisions to better understand what works best. Indicate which data split is
-used for the analyses (e.g. in table captions). If you modify your system
-subsequent to the official submission, clearly indicate which results are
-from the modified system.
-
-Error analysis: Look at some of your system predictions to get a feel for
-the kinds of mistakes it makes. If appropriate to the task, consider
-including a confusion matrix or other analysis of error you may need to
-manually tag a small sample for this.
 
 \section{Conclusion}
 
 % TODO:
 
-\subsection{References}
+\bibliography{custom}
 
 % TODO:
 
