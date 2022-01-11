@@ -34,8 +34,8 @@ model_config = {
 
 if __name__ == "__main__":
     # model_name = "hatexplain"
-    # model_name="distillbert"
-    model_name = "distillroberta"
+    model_name="distillbert"
+    # model_name = "distillroberta"
     model = model_config[model_name]
     data = DPMDataModule(batch_size=BATCH_SIZE, num_workers=NW, model=model["hf_name"])
     model = model["model"](model=model["hf_name"])
