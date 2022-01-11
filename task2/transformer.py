@@ -21,6 +21,7 @@ class BaseBert(LightningModule):
         for param in self.bert.parameters():
             param.requires_grad = False
 
+
         self.classifier = Sequential(
             Linear(in_features=768, out_features=128, bias=True),
             Dropout(0.3),
@@ -77,16 +78,16 @@ class BaseBert(LightningModule):
         return {"f1": f1_score}
 
     def test_epoch_end(self, out):
-        f1_score = torch.stack([x["f1"] for x in out]).mean(dim=0).mean().nan_to_num(0)
         f1_scores = torch.stack([x["f1"] for x in out]).mean(dim=0).nan_to_num(0)
+        f1_score = f1_scores.mean()
         f1_score_dict = {
-            "f1_c0": f1_scores[0],
-            "f1_c1": f1_scores[1],
-            "f1_c2": f1_scores[2],
-            "f1_c3": f1_scores[3],
-            "f1_c4": f1_scores[4],
-            "f1_c5": f1_scores[5],
-            "f1_c6": f1_scores[6],
+            "f1_unb": f1_scores[0],
+            "f1_com": f1_scores[1],
+            "f1_pre": f1_scores[2],
+            "f1_aut": f1_scores[3],
+            "f1_sha": f1_scores[4],
+            "f1_met": f1_scores[5],
+            "f1_merr": f1_scores[6],
             "f1_score ": f1_score,
         }
         self.log_dict(f1_score_dict)
@@ -100,9 +101,8 @@ class RoBERTa(BaseBert):
             param.requires_grad = False
 
         self.classifier = Sequential(
-            Linear(in_features=768, out_features=32, bias=True),
             Dropout(0.3),
-            Linear(in_features=32, out_features=self.n_classes, bias=True),
+            Linear(in_features=768, out_features=self.n_classes, bias=True),
         )
 
 
@@ -115,7 +115,6 @@ class DistillBert(BaseBert):
             param.requires_grad = False
 
         self.classifier = Sequential(
-            Linear(in_features=768, out_features=32, bias=True),
             Dropout(0.3),
-            Linear(in_features=32, out_features=self.n_classes, bias=True),
+            Linear(in_features=768, out_features=self.n_classes, bias=True),
         )
