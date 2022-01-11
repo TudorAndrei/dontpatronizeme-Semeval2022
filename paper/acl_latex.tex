@@ -1,42 +1,3 @@
-% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
-\pdfoutput=1
-% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
-
-\documentclass[11pt]{article}
-
-% Remove the "review" option to generate the final version.
-\usepackage[review]{acl}
-
-% Standard package includes
-\usepackage{times}
-\usepackage{latexsym}
-
-% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
-\usepackage[T1]{fontenc}
-% For Vietnamese characters
-% \usepackage[T5]{fontenc}
-% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
-
-% This assumes your files are encoded as UTF8
-\usepackage[utf8]{inputenc}
-
-% This is not strictly necessary, and may be commented out,
-% but it will improve the layout of the manuscript,
-% and will typically save some space.
-\usepackage{microtype}
-
-% If the title and author information does not fit in the area allocated, uncomment the following
-%
-%\setlength\titlebox{<dim>}
-%
-% and set <dim> to something 5cm or larger.
-
-\title{Instructions for *ACL Proceedings}
-
-% Author information can be set in various styles:
-% For several authors from the same institution:
-% \author{Author 1 \and ... \and Author n \\
-%         Address line \\ ... \\ Address line}
 % if the names do not fit well on one line use
 %         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
 % For authors from different institutions:
@@ -48,9 +9,8 @@
 %         \AND
 %         Author 2 \\ Address line \\ ... \\ Address line \And
 %         Author 3 \\ Address line \\ ... \\ Address line}
-
-\author{Person 1\and Person 3 \and Person 5 \and Person 2\\
-        {tone}@edu.ro}
+%\author{Person 1\and Person 3 \and Person 5 \and Person 2\\
+%       {tone}@edu.ro}
 % \author{First Author \\
 %   Affiliation / Address line 1 \\
 %   Affiliation / Address line 2 \\
@@ -61,80 +21,256 @@
 %   Affiliation / Address line 2 \\
 %   Affiliation / Address line 3 \\
 %   \texttt{email@domain} \\}
+%\input{tcilatex}
 
+
+\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{eurosym}
+\usepackage[final]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+
+%TCIDATA{OutputFilter=Latex.dll}
+%TCIDATA{Version=5.50.0.2890}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=BibTeX}
+%TCIDATA{LastRevised=Tuesday, January 11, 2022 03:21:03}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+
+\pdfoutput=1
+\input{tcilatex}
 \begin{document}
+
+\title{SemEval 2022: Patronizing and Condescending Language Detection}
+\date{}
+\author{}
 \maketitle
+
 \begin{abstract}
-This document is a supplement to the general instructions for *ACL authors. It contains instructions for using the \LaTeX{} style files for ACL conferences.
-The document itself conforms to its own specifications, and is therefore an example of what your manuscript should look like.
-These instructions should be used both for papers submitted for review and for final versions of accepted papers.
+This report is part of the SemEval 2022 Workshop, Task 4 - Patronizing and
+Condescending Language Detection, trying to find out Patronizing and
+Condescendending Language in any form of text. There were used many methods,
+varying from simple Machine Learning algorithms applied on bag of words
+embeddings until Bert Embeddings and using Neural Networks in order to solve
+both the binary classification and multi-label classification as well.
 \end{abstract}
 
 \section{Introduction}
 
-These instructions are for authors submitting papers to *ACL conferences using \LaTeX. They are not self-contained. All authors must follow the general instructions for *ACL proceedings,\footnote{\url{http://acl-org.github.io/ACLPUB/formatting.html}} and this document contains additional instructions for the \LaTeX{} style files.
+The Patronizing and Condescending Language Detection Task is based on the
+paper Don't Patronize Me! An annotated Dataset with Patronizing and
+Condescending Language Towards Vulnerable Communities (Perez-Almendros et
+al., 2020).
 
-The templates include the \LaTeX{} source of this document (\texttt{acl.tex}),
-the \LaTeX{} style file used to format it (\texttt{acl.sty}),
-an ACL bibliography style (\texttt{acl\_natbib.bst}),
-an example bibliography (\texttt{custom.bib}),
-and the bibliography for the ACL Anthology (\texttt{anthology.bib}).
+The aim of this task is to identify PCL, and to categorize the linguistic
+techniques used to express it, specifically when referring to communities
+identified as being vulnerable to unfair treatment in the media.
+
+Participants were provided with sentences in context (paragraphs), extracted
+from news articles, in which one or several predefined vulnerable
+communities are mentioned. The challenge is divided into two subtasks.
+
+\begin{enumerate}
+\item Subtask 1: Binary classification. Given a paragraph, a system must
+predict whether or not it contains any form of PCL.
+
+\item Subtask 2: Given a paragraph, a system must identify which PCL
+categories express the condescension. The PCL taxonomy has been defined
+based on previous works on PCL. There are considered the following
+categories:
+\end{enumerate}
+
+\begin{itemize}
+\item Unbalanced power relations.
+
+\item Shallow solution.
+
+\item Presupposition.
+
+\item Authority voice.
+
+\item Metaphor.
+
+\item Compassion.
+
+\item The poorer, the merrier.
+\end{itemize}
 
 \section{Background}
 
+The dataset used for this SemEval 2022 task was Don't Patronize Me! dataset,
+which contains a suite of sentences that mention some vulnerable communities
+and published in media in a lot of English speaking countries. The
+paragraphs were manually annotated to show 1) whether the text contains any
+kind of PCL, and 2) if it contains PCL, what linguistic techniques
+(categories) are used to express the condescension.
 
+The dataset for subtask 1 (binary classification) contained a number of
+10.636 paragraphs and 2.792 instances were used for the categories
+classification subtask.
 
-In your own words, summarize important details about the task setup: kind of input and output (give an example if possible); what datasets were used, including language, genre, and size. If there were multiple tracks, say which you participated in.
+In \ref{fig1}, it can be seen that for the first subtask, there are almost
+1000 of texts that contain PCL. That means we're dealing with imbalanced
+data that we need to solve it. In the next 3 figures (\ref{fig2}, \ref{fig3}%
+, \ref{fig4}, it could be noticed the distribution of the most common words
+both in the full dataset, but in texts that contain/don't contain PCL as
+well.
 
-Here or in other sections, cite related work that will help the reader to understand your contribution and what aspects of it are novel.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{DataDistribution.png}
+\caption{Classes Distribution for Binary Classification problem (Subtask 1)}
+\label{fig1}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{common.png}
+\caption{Most common words in the dataset (Subtask 1)}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{pcl.png}
+\caption{Most common words classified into PCL}
+\label{fig3}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{nopcl.png}
+\caption{Most common words of texts that are not PCL}
+\label{fig4}
+\end{figure}
 
 \section{System Overview}
 
+\begin{enumerate}
+\item Subtask 1 (Binary Classification)
 
-Key algorithms and modeling decisions in your system; resources used beyond the provided training data; challenging aspects of the task and how your system addresses them. This may require multiple pages and several subsections, and should allow the reader to mostly reimplement your system’s algorithms.
+Because the dataset was very imbalanced, we tried different approaches in
+order to make it balanced:
 
-Use equations and pseudocode if they help convey your original design decisions, as well as explaining them in English. If you are using a widely popular model/algorithm like logistic regression, an LSTM, or stochastic gradient descent, a citation will suffice—you do not need to spell out all the mathematical details.
+\begin{itemize}
+\item Adding a class weight to the models used. In this approach, we
+computed a metric in which we obtained a class weight according to the
+imbalance of the dataset. Through this method, we gave some different
+weights to both the majority and minority classes. This whole process had
+the purpose to penalize the misclassification made by the minority class by
+setting a higher class weight and at the same time, reducing the weight for
+the majority class.
 
-Give an example if possible to describe concretely the stages of your algorithm.
+\item Using oversampling methods and special ensemble techniques. In this
+approach, there were used methods like SMOTE (Synthetic Minority
+Over-sampling Technique), Adasyn (Adaptive Synthetic), SVM-SMOTE and self
+paced ensemble that performs strictly balanced under-sampling in each
+iteration, being very efficient computationally.
 
-If you have multiple systems/configurations, delineate them clearly.
+\item Augmenting the data. Because we notice so little data for label 1, we
+decided to collect hate speech datasets and add the positive texts into our
+dataset in order to balance the classes frequency, obtaining a total of 6372
+from 795 initial texts with label 1. We'll notice in the results section
+that this collection and generation of new dataset didn't provide good
+results.
+\end{itemize}
 
-This is likely to be the longest section of your pap
+The dataset was a little bit preprocessed and split into two preprocessed
+types: lemmatized cleaned dataset and stemmed cleaned dataset. These two
+datasets were generated in order to make some comparison between those two
+techniques and to see which provided the best results.
+
+As feature extraction techniques, there were used techniques like Bag of
+Words, Tokenizer, Word2Vec and, finally, BertTokenizer which provided the
+best results in the end.
+
+As models, there were used Neural Networks with 3 dense layers, Long Short
+Term Memory (LSTM) with 64 and 128 neurons with dropout as well, basic
+Machine Learning algorithms like Logistic Regression, Random Forest, Support
+Vector Machines as XGBoost. In the end, we decided to try BERT embeddings
+and a classification BERT model, BertForSequenceClassification, that
+contains a single linear classification layer on top and that provided the
+best results after all of the other approaches.
+
+Another approach, called "Text shards" made use of the subtask related to
+multiclass classification as well. For an average text that contains PCL,
+only some small pieces of them are actually PCL and the rest of the text are
+not. The assumption is that this confuses the model, because a a combination
+of pcl and non pcl is labeled as PCL. To address this, the following
+approach is used:
+
+\begin{itemize}
+\item negative examples are left as they are
+
+\item each positive example is replaced with the actual pieces of PCL inside
+it that we can get from the categories file
+
+\item the positive examples obtained this way are added with the negative
+examples to obtain a training dataset
+
+\item all the sentences are cleaned of characters that are not letters and
+the words in each sentence are lemmatized
+
+\item a Tensorflow Hub pretrained model called Universal Sentence Encoder is
+trained on it
+
+\item for each text that we want to predict, we first use the model on the
+whole text to get an initial label
+
+\item a window (of the size of the average length of a cleaned PCL fragment
+* 2) is slided through the text and the model is used to predict that
+particular substring. If it is labeled as PCL, then we consider the whole
+text as PCL.
+\end{itemize}
+
+\item Subtask 2 (Multiclass Classification)
+\end{enumerate}
 
 \section{Experimental setup}
 
-
-
 How data splits (train/dev/test) are used.
 
-Key details about preprocessing, hyperparameter tuning, etc. that a reader would need to know to replicate your experiments. If space is limited, some of the details can go in an Appendix.
+Key details about preprocessing, hyperparameter tuning, etc. that a reader
+would need to know to replicate your experiments. If space is limited, some
+of the details can go in an Appendix.
 
-External tools/libraries used, preferably with version number and URL in a footnote.
+External tools/libraries used, preferably with version number and URL in a
+footnote.
 
 Summarize the evaluation measures used in the task.
 
-You do not need to devote much—if any—space to discussing the organization of your code or file formats.
+You do not need to devote much\^{a}\euro ''if any\^{a}\euro ''space to
+discussing the organization of your code or file formats.
 
 \section{Results}
 
+Main quantitative findings: How well did your system perform at the task
+according to official metrics? How does it rank in the competition?
 
+Quantitative analysis: Ablations or other comparisons of different design
+decisions to better understand what works best. Indicate which data split is
+used for the analyses (e.g. in table captions). If you modify your system
+subsequent to the official submission, clearly indicate which results are
+from the modified system.
 
-Main quantitative findings: How well did your system perform at the task according to official metrics? How does it rank in the competition?
-
-Quantitative analysis: Ablations or other comparisons of different design decisions to better understand what works best. Indicate which data split is used for the analyses (e.g. in table captions). If you modify your system subsequent to the official submission, clearly indicate which results are from the modified system.
-
-Error analysis: Look at some of your system predictions to get a feel for the kinds of mistakes it makes. If appropriate to the task, consider including a confusion matrix or other analysis of error subtypes—you may need to manually tag a small sample for this.
-\cite{Aho:72}
+Error analysis: Look at some of your system predictions to get a feel for
+the kinds of mistakes it makes. If appropriate to the task, consider
+including a confusion matrix or other analysis of error you may need to
+manually tag a small sample for this.
 
 \section{Conclusion}
 
 \subsection{References}
 
-\bibliography{custom}
-
 \appendix
 
 \section{Example Appendix}
+
 \label{sec:appendix}
 
 This is an appendix.
