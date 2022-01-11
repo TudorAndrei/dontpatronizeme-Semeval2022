@@ -12,7 +12,7 @@ from whos_there.senders.discord import DiscordSender
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 BATCH_SIZE = 8
 NW = 8
-EPOCHS = 50
+EPOCHS = 199
 
 web_hook = "https://discord.com/api/webhooks/929728317408571452/rDR6JgNQkEKhAGWDckVtUQWB-DZh2Nqpv3rfWrU1ziFoeX37iPAG-CLU0O_n1wlakPp-"
 
@@ -34,8 +34,8 @@ model_config = {
 
 if __name__ == "__main__":
     # model_name = "hatexplain"
-    model_name="distillbert"
-    # model_name = "distillroberta"
+    # model_name="distillbert"
+    model_name = "distillroberta"
     model = model_config[model_name]
     data = DPMDataModule(batch_size=BATCH_SIZE, num_workers=NW, model=model["hf_name"])
     model = model["model"](model=model["hf_name"])
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 filename="radar-epoch{epoch:02d}-val_loss{val/val_loss:.2f}",
                 auto_insert_metric_name=False,
             ),
-            # EarlyStopping(monitor="val/val_loss", patience=10),
+            EarlyStopping(monitor="val/val_loss", patience=10),
         ],
     )
     trainer.fit(model, datamodule=data)
