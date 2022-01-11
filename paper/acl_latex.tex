@@ -39,7 +39,7 @@
 %TCIDATA{Version=5.50.0.2890}
 %TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
 %TCIDATA{BibliographyScheme=BibTeX}
-%TCIDATA{LastRevised=Tuesday, January 11, 2022 03:21:03}
+%TCIDATA{LastRevised=Tuesday, January 11, 2022 14:03:01}
 %TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
 
 \pdfoutput=1
@@ -233,35 +233,88 @@ text as PCL.
 
 \section{Experimental setup}
 
-How data splits (train/dev/test) are used.
+For both of the subtasks, the organizers from SemEval provided training and
+validation datasets: one subset for training purposes and the other one to
+validate the results on the training dataset. These practice splits were
+provided in order to generate some predictions for the validation dataset
+and submit them to the Codalab and familiarize with the format accepted by
+Codalab.
 
-Key details about preprocessing, hyperparameter tuning, etc. that a reader
-would need to know to replicate your experiments. If space is limited, some
-of the details can go in an Appendix.
+For subtask 1, we experimented with a lot of approaches, varrying from
+classical Machine Learning algorithms to Deep Learning techniques.
 
-External tools/libraries used, preferably with version number and URL in a
-footnote.
+The preprocessing step consisted in:
 
-Summarize the evaluation measures used in the task.
+\begin{description}
+\item clearing the special characters from the dataset
 
-You do not need to devote much\^{a}\euro ''if any\^{a}\euro ''space to
-discussing the organization of your code or file formats.
+\item lowercasing the texts
+
+\item removing the stopwords
+
+\item removing the words shorter than 3 character
+
+\item lemmatization / stemming - here we used both of these datasets in
+order to compare the results between these 2 techniques as well
+\end{description}
+
+\begin{itemize}
+\item Class weight for imbalanced dataset + 3 Dense Layers
+
+This method consisted in creating the class weights corresponding to the
+imbalance of the data and provide it to a Neural Network with 3 Dense Layer
+with 512 units, 256 units and, finally, 128 units. The activation used for
+the final layer was sigmoid and Adam seemed to be the best optimizer among
+the other optimizers used in Neural Networks algorithms. This method was
+used on a TFIDF lemmatized and stemmed training dataset with 2000 features.
+
+\item Deep Learning for Oversampled dataset
+
+In this approach, there was used the same Neural Network with 3 dense layers
+as proposed above, but this time, this neural network was used on
+Oversampled datasets using SMOTE, Adasyn, SVM Smote and self paced ensemble
+techniques.
+
+\item Tokenization of the lemmatized and stemmed dataset + LSTM neural
+network
+
+This time, we used the Tokenizer library from Tensorflow and tokenized all
+of the lemmatized and stemmed training datasets with 2000 as maximum of
+features. The sequences were then padded into 100 words (we noticed that the
+max length of a sentence didn't pass 60-70 words) and we used a LSTM network
+with 128 neurons, a Global Max Pool 1D, followed by a Dense with 64 units
+with l1 regularizer and a dropout of 0.1. 
+
+\item Classical Machine Learning algorithms on both imbalanced and balanced
+datasets
+
+In this approach, there were used Logistic Regression, Random Forest,
+Support Vector Machines and XGBoost on both imbalanced datasets (but
+specifying the class\_weight = 'balanced') and oversampled datasets as well. 
+
+\item Word2Vec + LSTM
+
+Word2Vec was used in this approach in order to extract the embedding matrix
+of each word from the dataset and feed the LSTM neural network with that
+specific embedding.
+
+\item Data augmentation
+
+Because our dataset was very imbalanced and oversampling methods didn't
+bring so many good results, we also tried to collect some Hate Speech
+datasets with 1 or 0 labels. In order to balance the classes distributiuon,
+we decided to add the hate speech texts into our dataset and apply both
+logistic regression algorithm, and a deep learning approach as well with 3
+dense layers of 512, 256 and 128 units respectively.
+
+\item BERT Transformers + BertForSequenceClassification
+
+The winner of this problem was using BERT transformers for encoding the
+texts and using Bert for sequence classification as a model to predict if a
+text contains PCL or not.
+\end{itemize}
 
 \section{Results}
-
-Main quantitative findings: How well did your system perform at the task
-according to official metrics? How does it rank in the competition?
-
-Quantitative analysis: Ablations or other comparisons of different design
-decisions to better understand what works best. Indicate which data split is
-used for the analyses (e.g. in table captions). If you modify your system
-subsequent to the official submission, clearly indicate which results are
-from the modified system.
-
-Error analysis: Look at some of your system predictions to get a feel for
-the kinds of mistakes it makes. If appropriate to the task, consider
-including a confusion matrix or other analysis of error you may need to
-manually tag a small sample for this.
 
 \section{Conclusion}
 
