@@ -10,7 +10,7 @@ from transformers.models.auto.modeling_auto import AutoModelForSequenceClassific
 
 
 class BaseBert(LightningModule):
-    def __init__(self, model=None, n_classes: int = 7, hidden_size=512) -> None:
+    def __init__(self, model=None, n_classes: int = 7, hidden_size=1024) -> None:
         super().__init__()
         self.n_classes = n_classes
         self.bert_output_size = 768
@@ -123,10 +123,9 @@ class RoBERTa(BaseBert):
 
 class DistillBert(BaseBert):
     def __init__(self, model: str, n_classes=7) -> None:
-        super().__init__(model, n_classes, hidden_size=2048)
+        super().__init__(model, n_classes, hidden_size=2048*4)
         self.bert = AutoModelForSequenceClassification.from_pretrained(model).distilbert
         self.freeze_model(self.bert)
-        # self.hidden_size = 2048
         self.classifier = Linear(
             in_features=self.hidden_size, out_features=self.n_classes, bias=True
         )
