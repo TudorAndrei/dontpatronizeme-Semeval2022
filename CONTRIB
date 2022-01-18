@@ -1,0 +1,11 @@
+CONTRIB:
+    Task1:
+        Raluca Gînga
+        Bogdan Dobre
+            Implementing the approah using text shards for task 1
+            Training and Evaluating the Neural Network model for this approach 
+    Task2:
+        Tudor Andrei Dumitrascu
+            Dataloader
+            Training & Evaluating BertModels
+        Bogdan Radu Silviu Sielecki
