@@ -1,8 +1,13 @@
 CONTRIB:
     Task1:
         Raluca Gînga
+            Deep Learning approaches & ML approaches on imbalanced and oversampled dataset
+            Word2Vec & LSTM
+            Data Augmentation
+            BERT Embeddings & Bert for sequence classification
+            Contribution to documentation (Abstract, Intro, Dataset, System Overview for subtask 1, results for task 1)
         Bogdan Dobre
-            Implementing the approah using text shards for task 1
+            Implementing the approach using text shards for task 1
             Training and Evaluating the Neural Network model for this approach 
     Task2:
         Tudor Andrei Dumitrascu
