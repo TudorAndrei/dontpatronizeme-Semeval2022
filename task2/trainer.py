@@ -18,7 +18,7 @@ log.getLogger("pytorch_lightning").setLevel(log.WARNING)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 seed_everything(42)
 
-BATCH_SIZE = 1
+BATCH_SIZE = 4
 NW = 8
 EPOCHS = 100
 
@@ -34,7 +34,6 @@ model_config = {
         "hf_name": "bert-base-multilingual-uncased",
         "model": Bert,
     },
-
     "hatexplain": {
         "hf_name": "Hate-speech-CNERG/bert-base-uncased-hatexplain",
         "model": Bert,
@@ -56,9 +55,9 @@ model_config = {
 if __name__ == "__main__":
     model_name = "bert"
     # model_name = "bert-multi-lingual"
-    model_name = "hatexplain"
+    # model_name = "hatexplain"
 
-    # model_name = "distillbert"
+    model_name = "distillbert"
     # model_name = "distillbert-multi"
     # model_name = "distillroberta"
     num_outputs = 3
@@ -69,34 +68,65 @@ if __name__ == "__main__":
         model=model["hf_name"],
         num_outputs=num_outputs,
     )
-    model = model["model"](model=model["hf_name"], n_classes=num_outputs)
+    pl_model = model["model"](model=model["hf_name"], n_classes=num_outputs)
     logger = TensorBoardLogger("tb_logs", name=f"{model_name}")
+    model_checkpoint = ModelCheckpoint(
+        monitor="val/val_loss",
+        mode="min",
+        dirpath=f"models/{model_name}_3",
+        filename="bert-val_loss{val/val_loss:.2f}",
+        auto_insert_metric_name=False,
+    )
+    discord_sender = NotificationCallback(
+        senders=[
+            DiscordSender(
+                webhook_url=web_hook,
+            )
+        ]
+    )
 
-    trainer = Trainer(
+    train_1 = Trainer(
         # fast_dev_run=True,
         detect_anomaly=True,
         gpus=1,
-        enable_model_summary=True,
         logger=logger,
         max_epochs=EPOCHS,
         callbacks=[
-            NotificationCallback(
-                senders=[
-                    DiscordSender(
-                        webhook_url=web_hook,
-                    )
-                ]
-            ),
+            # discord_sender,
+            model_checkpoint,
             # LearningRateMonitor(logging_interval="step"),
-            # ModelCheckpoint(
-            #     monitor="val/val_loss",
-            #     mode="min",
-            #     dirpath=f"models/{model_name}",
-            #     filename="radar-epoch{epoch:02d}-val_loss{val/val_loss:.2f}",
-            #     auto_insert_metric_name=False,
-            # ),
+            EarlyStopping(monitor="val/val_loss", patience=5),
+        ],
+    )
+    train_1.fit(pl_model, datamodule=data)
+    train_1.test(pl_model, datamodule=data, ckpt_path="best")
+
+    best_path = model_checkpoint.best_model_path
+    print(best_path)
+    # Retrain model with 7 outputs
+    data = DPMDataModule(
+        batch_size=BATCH_SIZE,
+        num_workers=NW,
+        model=model["hf_name"],
+        num_outputs=7,
+    )
+    pl_model.load_from_checkpoint(
+        best_path, model=model["hf_name"], n_classes=num_outputs
+    )
+    pl_model.change_classifier()
+    best_path = model_checkpoint.best_model_path
+
+    train_2 = Trainer(
+        # fast_dev_run=True,
+        detect_anomaly=True,
+        gpus=1,
+        logger=logger,
+        max_epochs=EPOCHS,
+        callbacks=[
+            discord_sender,
+            # LearningRateMonitor(logging_interval="step"),
             EarlyStopping(monitor="val/val_loss", patience=10),
         ],
     )
-    trainer.fit(model, datamodule=data)
-    trainer.test(model, datamodule=data, ckpt_path="best")
+    train_2.fit(pl_model, datamodule=data)
+    train_2.test(pl_model, datamodule=data, ckpt_path="best")
