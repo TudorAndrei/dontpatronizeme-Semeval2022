@@ -1,4 +1,3 @@
-import pretty_errors
 import torch
 from pytorch_lightning import LightningModule
 from torch.nn import Dropout, Linear, Module, ReLU, Sequential

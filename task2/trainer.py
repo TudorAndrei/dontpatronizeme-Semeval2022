@@ -10,8 +10,9 @@ from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from transformer import Bert, DistillBert, RoBERTa
 from transformers import logging
-from whos_there.callback import NotificationCallback
-from whos_there.senders.discord import DiscordSender
+# from whos_there.callback import NotificationCallback
+# from whos_there.senders.discord import DiscordSender
+
 
 logging.set_verbosity_warning()
 log.getLogger("pytorch_lightning").setLevel(log.WARNING)
@@ -59,7 +60,7 @@ if __name__ == "__main__":
 
     # model_name = "distillbert"
     # model_name = "distillbert-multi"
-    # model_name = "distillroberta"
+    model_name = "distillroberta"
     num_outputs = 3
     model = model_config[model_name]
     data = DPMDataModule(
@@ -77,13 +78,13 @@ if __name__ == "__main__":
         filename="bert-val_loss{val/val_loss:.2f}",
         auto_insert_metric_name=False,
     )
-    discord_sender = NotificationCallback(
-        senders=[
-            DiscordSender(
-                webhook_url=web_hook,
-            )
-        ]
-    )
+    # discord_sender = NotificationCallback(
+    #     senders=[
+    #         DiscordSender(
+    #             webhook_url=web_hook,
+    #         )
+    #     ]
+    # )
 
     train_1 = Trainer(
         # fast_dev_run=True,
@@ -123,7 +124,7 @@ if __name__ == "__main__":
         logger=logger,
         max_epochs=EPOCHS,
         callbacks=[
-            discord_sender,
+            # discord_sender,
             # LearningRateMonitor(logging_interval="step"),
             EarlyStopping(monitor="val/val_loss", patience=10),
         ],
