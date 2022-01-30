@@ -1,7 +1,7 @@
 import torch
 from pytorch_lightning import LightningModule
-from torch.nn import Dropout, Linear, Module, ReLU, Sequential
-from torch.nn.modules.loss import BCEWithLogitsLoss
+from torch.nn import Dropout, Linear, Module, ReLU, Sequential, Sigmoid
+from torch.nn.modules.loss import BCEWithLogitsLoss, BCELoss
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchmetrics.functional import f1
@@ -20,10 +20,11 @@ class BaseBert(LightningModule):
         self.lr = 0.003
         self.bert = AutoModelForSequenceClassification.from_pretrained(model)
         self.hidden = Sequential(
-            Linear(self.bert_output_size, self.hidden_size), ReLU(), Dropout(0.1)
+            Linear(self.bert_output_size, self.hidden_size), ReLU(), Dropout(0.1),
+            Sigmoid()
         )
         self.classifier = Module()
-        self.criterion = BCEWithLogitsLoss()
+        self.criterion = BCELoss()
 
     def change_classifier(self, n_classes=7):
         self.classifier = Linear(

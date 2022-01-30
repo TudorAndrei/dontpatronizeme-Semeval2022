@@ -19,7 +19,7 @@ log.getLogger("pytorch_lightning").setLevel(log.WARNING)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 seed_everything(42)
 
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 NW = 8
 EPOCHS = 100
 
@@ -115,7 +115,13 @@ if __name__ == "__main__":
     )
     pl_model.change_classifier()
     best_path = model_checkpoint.best_model_path
-
+    model_checkpoint = ModelCheckpoint(
+            monitor="val/val_loss",
+            mode="min",
+            dirpath=f"models/{model_name}_7",
+            filename="bert-val_loss{val/val_loss:.2f}",
+            auto_insert_metric_name=False,
+        )
     train_2 = Trainer(
         # fast_dev_run=True,
         detect_anomaly=True,
@@ -125,6 +131,7 @@ if __name__ == "__main__":
         callbacks=[
             # discord_sender,
             # LearningRateMonitor(logging_interval="step"),
+            model_checkpoint,
             EarlyStopping(monitor="val/val_loss", patience=10),
         ],
     )
