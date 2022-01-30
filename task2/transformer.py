@@ -6,6 +6,7 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchmetrics.functional import f1
 from transformers.models.auto.modeling_auto import AutoModelForSequenceClassification
+from torch.nn.functional import sigmoid
 
 
 class BaseBert(LightningModule):
@@ -20,11 +21,12 @@ class BaseBert(LightningModule):
         self.lr = 0.003
         self.bert = AutoModelForSequenceClassification.from_pretrained(model)
         self.hidden = Sequential(
-            Linear(self.bert_output_size, self.hidden_size), ReLU(), Dropout(0.1),
-            Sigmoid()
+            Linear(self.bert_output_size, self.hidden_size),
+            ReLU(),
+            Dropout(0.1)
         )
         self.classifier = Module()
-        self.criterion = BCELoss()
+        self.criterion = BCEWithLogitsLoss()
 
     def change_classifier(self, n_classes=7):
         self.classifier = Linear(
@@ -43,6 +45,7 @@ class BaseBert(LightningModule):
         out = out[:, 0]
         out = self.hidden(out)
         out = self.classifier(out)
+        # out = torch.sigmoid(out)
         return out
 
     def configure_optimizers(self):
@@ -68,7 +71,7 @@ class BaseBert(LightningModule):
         ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
         output = self(ids, mask)
         loss = self.criterion(output, labels)
-        f1_score = f1(output, labels.int(), average="macro", num_classes=self.n_classes)
+        f1_score = f1(sigmoid(output), labels.int(), average="macro", num_classes=self.n_classes)
         return {"loss": loss, "f1": f1_score}
 
     def validation_epoch_end(self, out):
@@ -80,7 +83,7 @@ class BaseBert(LightningModule):
     def test_step(self, batch, _):
         ids, mask, labels = batch["ids"], batch["mask"], batch["labels"]
         output = self(ids, mask)
-        f1_score = f1(output, labels.int(), average="none", num_classes=self.n_classes)
+        f1_score = f1(sigmoid(output), labels.int(), average="none", num_classes=self.n_classes)
 
         return {"f1": f1_score}
 

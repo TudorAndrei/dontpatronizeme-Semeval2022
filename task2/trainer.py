@@ -14,13 +14,13 @@ from transformers import logging
 # from whos_there.senders.discord import DiscordSender
 
 
-logging.set_verbosity_warning()
-log.getLogger("pytorch_lightning").setLevel(log.WARNING)
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
-seed_everything(42)
+# logging.set_verbosity_warning()
+# log.getLogger("pytorch_lightning").setLevel(log.WARNING)
+# os.environ["TOKENIZERS_PARALLELISM"] = "false"
+# seed_everything(42)
 
-BATCH_SIZE = 2
-NW = 8
+BATCH_SIZE = 16
+NW = 16
 EPOCHS = 100
 
 web_hook = "https://discord.com/api/webhooks/929728317408571452/rDR6JgNQkEKhAGWDckVtUQWB-DZh2Nqpv3rfWrU1ziFoeX37iPAG-CLU0O_n1wlakPp-"
@@ -55,12 +55,13 @@ model_config = {
 
 if __name__ == "__main__":
     model_name = "bert"
-    # model_name = "bert-multi-lingual"
-    model_name = "hatexplain"
+    model_name = "bert-multi-lingual"
+
+    # model_name = "hatexplain"
     # model_name = "distillbert"
     # model_name = "distillbert-multi"
     model_name = "distillroberta"
-    num_outputs = 3
+    num_outputs = 7
     model = model_config[model_name]
     data = DPMDataModule(
         batch_size=BATCH_SIZE,
@@ -101,39 +102,39 @@ if __name__ == "__main__":
     train_1.fit(pl_model, datamodule=data)
     train_1.test(pl_model, datamodule=data, ckpt_path="best")
 
-    best_path = model_checkpoint.best_model_path
-    print(best_path)
-    # Retrain model with 7 outputs
-    data = DPMDataModule(
-        batch_size=BATCH_SIZE,
-        num_workers=NW,
-        model=model["hf_name"],
-        num_outputs=7,
-    )
-    pl_model.load_from_checkpoint(
-        best_path, model=model["hf_name"], n_classes=num_outputs
-    )
-    pl_model.change_classifier()
-    best_path = model_checkpoint.best_model_path
-    model_checkpoint = ModelCheckpoint(
-            monitor="val/val_loss",
-            mode="min",
-            dirpath=f"models/{model_name}_7",
-            filename="bert-val_loss{val/val_loss:.2f}",
-            auto_insert_metric_name=False,
-        )
-    train_2 = Trainer(
-        # fast_dev_run=True,
-        detect_anomaly=True,
-        gpus=1,
-        logger=logger,
-        max_epochs=EPOCHS,
-        callbacks=[
-            # discord_sender,
-            # LearningRateMonitor(logging_interval="step"),
-            model_checkpoint,
-            EarlyStopping(monitor="val/val_loss", patience=10),
-        ],
-    )
-    train_2.fit(pl_model, datamodule=data)
-    train_2.test(pl_model, datamodule=data, ckpt_path="best")
+    # best_path = model_checkpoint.best_model_path
+    # print(best_path)
+    # # Retrain model with 7 outputs
+    # data = DPMDataModule(
+    #     batch_size=BATCH_SIZE,
+    #     num_workers=NW,
+    #     model=model["hf_name"],
+    #     num_outputs=7,
+    # )
+    # pl_model.load_from_checkpoint(
+    #     best_path, model=model["hf_name"], n_classes=num_outputs
+    # )
+    # pl_model.change_classifier()
+    # best_path = model_checkpoint.best_model_path
+    # model_checkpoint = ModelCheckpoint(
+    #         monitor="val/val_loss",
+    #         mode="min",
+    #         dirpath=f"models/{model_name}_7",
+    #         filename="bert-val_loss{val/val_loss:.2f}",
+    #         auto_insert_metric_name=False,
+    #     )
+    # train_2 = Trainer(
+    #     # fast_dev_run=True,
+    #     detect_anomaly=True,
+    #     gpus=1,
+    #     logger=logger,
+    #     max_epochs=EPOCHS,
+    #     callbacks=[
+    #         # discord_sender,
+    #         # LearningRateMonitor(logging_interval="step"),
+    #         model_checkpoint,
+    #         EarlyStopping(monitor="val/val_loss", patience=10),
+    #     ],
+    # )
+    # train_2.fit(pl_model, datamodule=data)
+    # train_2.test(pl_model, datamodule=data, ckpt_path="best")
