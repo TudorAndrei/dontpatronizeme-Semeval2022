@@ -117,6 +117,6 @@ class DontPatronizeMe:
 		rows=[]
 		with open(self.test_path) as f:
 			for line in f.readlines()[4:]:
-				t=line.strip().split('\t')[3].lower()
+				t=line.strip().split('\t')[4].lower()
 				rows.append(t)
 		self.test_set = rows

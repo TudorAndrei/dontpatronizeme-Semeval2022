@@ -122,7 +122,7 @@ class RoBERTa(BaseBert):
 
 class DistillBert(BaseBert):
     def __init__(self, model: str, n_classes=7) -> None:
-        super().__init__(model, n_classes, hidden_size=2048*4)
+        super().__init__(model, n_classes, hidden_size=2048 * 4)
         self.bert = AutoModelForSequenceClassification.from_pretrained(model).distilbert
         self.freeze_model(self.bert)
         self.classifier = Linear(

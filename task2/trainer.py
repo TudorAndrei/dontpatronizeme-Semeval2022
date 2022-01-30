@@ -57,7 +57,6 @@ if __name__ == "__main__":
     model_name = "bert"
     # model_name = "bert-multi-lingual"
     model_name = "hatexplain"
-
     # model_name = "distillbert"
     # model_name = "distillbert-multi"
     model_name = "distillroberta"
