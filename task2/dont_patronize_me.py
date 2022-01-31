@@ -116,7 +116,8 @@ class DontPatronizeMe:
 		#self.test_df = [line.strip() for line in open(self.test_path)]
 		rows=[]
 		with open(self.test_path) as f:
-			for line in f.readlines()[4:]:
+			for line in f.readlines():
+				# print(line)
 				t=line.strip().split('\t')[4].lower()
 				rows.append(t)
 		self.test_set = rows
