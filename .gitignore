@@ -314,3 +314,4 @@ task2/tb_logs/
 task2/lightning_logs/
 .vscode/
 task2/models/
+dataset/
