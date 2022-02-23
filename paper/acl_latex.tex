@@ -1,31 +1,5 @@
-% if the names do not fit well on one line use
-%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
-% For authors from different institutions:
-% \author{Author 1 \\ Address line \\  ... \\ Address line
-%         \And  ... \And
-%         Author n \\ Address line \\ ... \\ Address line}
-% To start a seperate ``row'' of authors use \AND, as in
-% \author{Author 1 \\ Address line \\  ... \\ Address line
-%         \AND
-%         Author 2 \\ Address line \\ ... \\ Address line \And
-%         Author 3 \\ Address line \\ ... \\ Address line}
-%\author{Person 1\and Person 3 \and Person 5 \and Person 2\\
-%       {tone}@edu.ro}
-% \author{First Author \\
-%   Affiliation / Address line 1 \\
-%   Affiliation / Address line 2 \\
-%   Affiliation / Address line 3 \\
-%   \texttt{email@domain} \\\And
-%   Second Author \\
-%   Affiliation / Address line 1 \\
-%   Affiliation / Address line 2 \\
-%   Affiliation / Address line 3 \\
-%   \texttt{email@domain} \\}
-%\input{tcilatex}
-
-
+\pdfoutput=1
 \documentclass[11pt]{article}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{eurosym}
 \usepackage[final]{acl}
 \usepackage{times}
@@ -36,29 +10,20 @@
 \usepackage{microtype}
 \usepackage{multirow}
 
-%TCIDATA{OutputFilter=Latex.dll}
-%TCIDATA{Version=5.50.0.2890}
-%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
-%TCIDATA{BibliographyScheme=BibTeX}
-%TCIDATA{LastRevised=Tuesday, January 11, 2022 03:21:03}
-%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
 
-\pdfoutput=1
-% \input{tcilatex}
-\begin{document}
+
 
 \title{University of Bucharest Team at Semeval-2022 Task4: Detection and
 	Classification of Patronizing and Condescending Language}
-\author{Raluca G\^inga \\
-	University of Bucharest
-	\And Bogdan Dobre \\
-	University of Bucharest
-	\And Radu Sielecki \\
-	University of Bucharest
-	\And Tudor Dumitra\c{s}cu\\
-	University of Bucharest
+
+\author{Raluca Andreea G\^inga, {\bf Bogdan Dobre},  \\  {\bf Tudor-Andrei Dumitra\c{s}cu} \and {\bf Bogdan Radu Silviu Sielecki}\\
+    University of Bucharest \\
+\texttt{gingaraluca, dobrebogdan98, }\\
+\texttt{tudorandrei.dumitrascu, sieleckiradu@gmail.com }
 }
-\date{}
+
+
+\begin{document}
 \maketitle
 
 \begin{abstract}
@@ -72,7 +37,7 @@
 
 \section{Introduction}
 
-The Patronizing and Condescending Language Detection Task is based on the
+The Patronizing and Condescending Language Detection Task \cite{perezalmendros2022semeval} is based on the
 paper Don't Patronize Me! An annotated Dataset with Patronizing and
 Condescending Language Towards Vulnerable Communities \cite{perezalmendros2020dont}.
 
@@ -90,25 +55,11 @@ communities are mentioned. The challenge is divided into two subtasks.
 
 	\item Subtask 2: Given a paragraph, a system must identify which PCL
 	      categories express the condescension. The PCL taxonomy has been defined
-	      based on previous works on PCL. There are considered the following
-	      categories:
+	      based on previous works on PCL (i.g. Unbalanced power relations, Shallow
+          solution, Presupposition, Authority voice, Metaphor, Compassion, The poorer,
+          the merrier. )
 \end{enumerate}
 
-\begin{itemize}
-	\item Unbalanced power relations.
-
-	\item Shallow solution.
-
-	\item Presupposition.
-
-	\item Authority voice.
-
-	\item Metaphor.
-
-	\item Compassion.
-
-	\item The poorer, the merrier.
-\end{itemize}
 
 \section{Background}
 
@@ -130,30 +81,30 @@ data that we need to solve it. In the next 3 figures (\ref{fig2}, \ref{fig3}
 both in the full dataset, but in texts that contain/don't contain PCL as
 well.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{DataDistribution.png}
+	\includegraphics[width=0.4\textwidth]{DataDistribution.png}
 	\caption{Classes Distribution for Binary Classification problem (Subtask 1)}
 	\label{fig1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{common.png}
+	\includegraphics[width=0.4\textwidth]{common.png}
 	\caption{Most common words in the dataset (Subtask 1)}
 	\label{fig2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{pcl.png}
+	\includegraphics[width=0.4\textwidth]{pcl.png}
 	\caption{Most common words classified into PCL}
 	\label{fig3}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{nopcl.png}
+	\includegraphics[width=0.4\textwidth]{nopcl.png}
 	\caption{Most common words of texts that are not PCL}
 	\label{fig4}
 \end{figure}
@@ -421,9 +372,10 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
                             \hline
 			            \end{tabular}
 		            }
-                \item In Table \ref{tab:task2_2} the general class aproach is detailed, and
-                      even though some classes were learned, when it came to transfer the knowledge, information
-                      was lost.
+                \item The general class aproach is detailed in the following tables.
+                    It shows that the general classes were learned, but when using the
+                    pretrained models and fine-tuning on the specific classes, some
+                    of previously learned features are lost.
 
                         \scalebox{0.8}{
                             \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
@@ -499,6 +451,10 @@ only a few classes. The general class approach also proved to be inneficient.
 
 Some recommendations for future work could be to have a better approach and introduce
 more linguistic insignt in the approach.
+
+\section*{Acknowledgements}
+
+
 
 \bibliography{custom}
 \end{document}
