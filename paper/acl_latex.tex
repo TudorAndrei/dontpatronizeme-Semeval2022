@@ -47,7 +47,8 @@
 % \input{tcilatex}
 \begin{document}
 
-\title{SemEval 2022: Patronizing and Condescending Language Detection}
+\title{University of Bucharest Team at Semeval-2022 Task4: Detection and
+	Classification of Patronizing and Condescending Language}
 \author{Raluca G\^inga \\
 	University of Bucharest
 	\And Bogdan Dobre \\
@@ -257,11 +258,11 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		      \item BERT HateXplain \cite{mathew2020hatexplain}: This model was trained to classify text as Hate speech, Offensive or Normal.
 		            It was trained on Gab, Twitter and Humain Rationale;
 
-		      \item Distil BERT (?): This model is a version of Distilled bert finetuned on the Twitter dataset;
+		      \item Distil BERT : This model is a version of Distilled bert finetuned on the Twitter dataset;
 
 		      \item Distil BERT Multilingual Cased \cite{DistilBERT}
 
-		      \item Distill RoBERTa (?): This model is a verion of Distilled RoBERTa finetuned on the Twitter dataset;
+		      \item Distill RoBERTa : This model is a verion of Distilled RoBERTa finetuned on the Twitter dataset;
 	      \end{itemize}
 
 	      In the paper describing the dataset \cite{perezalmendros2020dont},
@@ -387,64 +388,99 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 	\item Subtask 2 (Multiclass Classification)
 
-	      In Table \ref{tab:results}, it can be seen that the models can easily two of the categories,
-	      while the rest of them are not learned. In Table \ref{tab:task2_2} the general class aproach is detailed, and
-	      even though some classes were learned, when it came to transfer the knowledge, information
-	      was lost.
+	      \begin{enumerate}
+		      \item Bert-link models approach for classification across 7 classes. In the table it
+                      can be seen that the models can easily two of the categories,
+                      while the rest of them are not learned
 
+		            \scalebox{0.5}{
+			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+				            \hline
+				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
+				            Class      & Unb& Sha  & Pre  & Aut
+				            \\ \hline
+				            Bert          & 0.82 & 0.0 & 0.0 & 0.0
+				            \\ \hline
+				            DistilRoberta & 0.83 & 0.0 & 0.0 & 0.0   \\
+				            \hline
+				            Distilbert    & 0.82 & 0.0 & 0.0 & 0.0   \\
+                            \hline
+			            \end{tabular}
+		            }
+		            \scalebox{0.5}{
+			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+				            \hline
+				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
+                            Class      & Met & Com  & Mer  & Mean Score
+				            \\ \hline
+                            Bert          & 0.0  & 0.0  & 0.64 & 0.21
+				            \\ \hline
+                            DistilRoberta & 0.0  & 0.0  & 0.59 & 0.20    \\
+				            \hline
+                            Distilbert    & 0.66 & 0.08 & 0.0  & 0.34   \\
+                            \hline
+			            \end{tabular}
+		            }
+                \item In Table \ref{tab:task2_2} the general class aproach is detailed, and
+                      even though some classes were learned, when it came to transfer the knowledge, information
+                      was lost.
+
+                        \scalebox{0.8}{
+                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+                                \hline
+                                 & \multicolumn{3}{|c|}{F1 Score}\\
+                                \hline
+                                Main/Sub-classes& Expert & Aut  & Pre \\
+                                \hline
+                                Bert          & 0.44  & 0.0  & 0.0 \\
+                                \hline
+                                DistilRoberta & 0.54  & 0.0  & 0.0 \\
+                                \hline
+                                DistilBert    & 0.42 & 0.0 & 0.40  \\
+                                \hline
+                                DistilBertMLC & 0.36 & 0.0 & 0.0  \\
+                                \hline
+                            \end{tabular}
+                        }
+
+                        \scalebox{0.8}{
+                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+                                \hline
+                                 & \multicolumn{3}{|c|}{F1 Score}\\
+                                \hline
+                                Main/Sub-classes& Saviour & Sha  & Unb \\
+                                \hline
+                                Bert          & 0.85 & 0.0 & 0.84 \\
+                                \hline
+                                DistilRoberta & 0.85 & 0.0 & 0.84 \\
+                                \hline
+                                DistilBert    & 0.75 & 0.0 & 0.81  \\
+                                \hline
+                                DistilBertMLC & 0.86 & 0.0 & 0.83  \\
+                                \hline
+                            \end{tabular}
+                        }
+
+                        \scalebox{0.8}{
+                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+                                \hline
+                                 & \multicolumn{4}{|c|}{F1 Score}\\
+                                \hline
+                                Main/Sub-classes& Poet & Com  & Mer & Met \\
+                                \hline
+                                Bert          & 0.69 & 0.0 & 0.0 & 0.59 \\
+                                \hline
+                                DistilRoberta & 0.69 & 0.11 & 0.0 & 0.65 \\
+                                \hline
+                                DistilBert    & 0.61 & 0.0 & 0.0 & 0.67  \\
+                                \hline
+                                DistilBertMLC & 0.60 & 0.0 & 0.0 & 0.52  \\
+                                \hline
+                            \end{tabular}
+                        }
+	      \end{enumerate}
 \end{enumerate}
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{scale=0.9\linewidth}
-		\hline
-		Model         & Unb  & Sha  & Pre  & Aut     \\
-		\hline
-		Bert          & 0.82 & 0.0  & 0.0  & 0.0     \\
-		\hline
-		DistilRoberta & 0.83 & 0.0  & 0.0  & 0.0     \\
-		\hline
-		DistilBert    & 0.82 & 0.0  & 0.0  & 0.0     \\
-		\\
-		\hline
-		Model         & Met  & Com  & Mer  & F1-Mean \\
-		\hline
-		Bert          & 0.0  & 0.0  & 0.64 & 0.21    \\
-		\hline
-		DistilRoberta & 0.0  & 0.0  & 0.59 & 0.      \\
-		\hline
-		DistilBert    & 0.66 & 0.08 & 0.0  & 0.34    \\
-		\hline
-	\end{tabular}
-	\caption{F1 Scores across the categories}
-	\label{tab:results}
-\end{table}
-
-\begin{table}[h]
-	\begin{tabular}{|l|llll}
-		\cline{1-4}
-		\multicolumn{1}{|c|}{Model} & \multicolumn{3}{l|}{Expert} &                                                              \\ \cline{1-4}
-		                            & Class                       & Aut  & \multicolumn{1}{l|}{Pre}  &                           \\ \cline{1-4}
-		DistilRoberta               & 0.54                        & 0.0  & \multicolumn{1}{l|}{0.0}  &                           \\
-		DistilBertMLC               & 0.36                        & 0.0  & \multicolumn{1}{l|}{0.0}  &                           \\
-		DistilBertUE                & 0.42                        & 0.0  & \multicolumn{1}{l|}{0.40} &                           \\
-		Bert                        & 0.44                        & 0.0  & \multicolumn{1}{l|}{0.0}  &                           \\ \cline{1-4}
-		                            & Saviour                     &      & \multicolumn{1}{l|}{}     &                           \\
-		                            & Class                       & Sha  & \multicolumn{1}{l|}{Unb}  &                           \\ \cline{1-4}
-		DistilRoberta               & 0.85                        & 0.0  & \multicolumn{1}{l|}{0.84} &                           \\
-		DistilBertMLC               & 0.86                        & 0.0  & \multicolumn{1}{l|}{0.83} &                           \\
-		DistilBertUE                & 0.75                        & 0.0  & \multicolumn{1}{l|}{0.81} &                           \\
-		Bert                        & 0.85                        & 0.0  & \multicolumn{1}{l|}{0.84} &                           \\ \hline
-		                            & Poet                        &      &                           & \multicolumn{1}{l|}{}     \\
-		                            & Class                       & Com  & Merr                      & \multicolumn{1}{l|}{Met}  \\ \hline
-		DistilRoberta               & 0.69                        & 0.11 & 0.0                       & \multicolumn{1}{l|}{0.65} \\
-		DistilBertMLC               & 0.60                        & 0.0  & 0.0                       & \multicolumn{1}{l|}{0.52} \\
-		DistilBertUE                & 0.61                        & 0.0  & 0.0                       & \multicolumn{1}{l|}{0.67} \\
-		Bert                        & 0.69                        & 0.0  & 0.0                       & \multicolumn{1}{l|}{0.59} \\ \hline
-	\end{tabular}
-	\caption{F1 Scores with sub-classes approach}
-	\label{tab:task2_2}
-\end{table}
 
 \section{Conclusion}
 
@@ -460,6 +496,9 @@ Sequence Classification, obtaining 0.50 as f1\_score.
 In the multi classification multi label task, the number of labels proved to
 be a challenge. The results overall are low and the models are only able to learn
 only a few classes. The general class approach also proved to be inneficient.
+
+Some recommendations for future work could be to have a better approach and introduce
+more linguistic insignt in the approach.
 
 \bibliography{custom}
 \end{document}
