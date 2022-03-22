@@ -18,8 +18,8 @@
 
 \author{Raluca Andreea G\^inga, {\bf Bogdan Dobre},  \\  {\bf Tudor-Andrei Dumitra\c{s}cu} \and {\bf Bogdan Radu Silviu Sielecki}\\
     University of Bucharest \\
-\texttt{gingaraluca, dobrebogdan98, }\\
-\texttt{tudorandrei.dumitrascu, sieleckiradu@gmail.com }
+\texttt{\{gingaraluca, dobrebogdan98, }\\
+\texttt{tudorandrei.dumitrascu, sieleckiradu\}@gmail.com }
 }
 
 
@@ -303,7 +303,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		      \item Tokenization of the lemmatized and stemmed dataset / Word2Vec + LSTM
 		            neural network
 
-		            \scalebox{0.55}{
+		            \scalebox{0.5}{
 			            \begin{tabular}[t]{|l|l|l|l|l|}
 				            \hline
 				                               & \multicolumn{2}{|l}{Lemmatized (F1\_Score)} & \multicolumn{2}{|l|}{Stemmed
@@ -316,7 +316,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 		      \item Data augmentation
 
-		            \scalebox{0.55}{
+		            \scalebox{0.5}{
 			            \begin{tabular}[t]{|l|l|}
 				            \hline
 				                                    & Augmented Data (F1\_Score) \\ \hline
@@ -335,14 +335,15 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 				            Bert Tokenizer + Classifier & 0.5074                       \\ \hline
 			            \end{tabular}
 		            }
-		     
+
 		      \item Text shards
 
 		            \scalebox{0.55}{
 			            \begin{tabular}[t]{|l|l|}
 				            \hline
-				                                        & Lemmatized data (F1\_Score) \\ \hline
-				            Text shards + Tensorflow Hub Keras layer & 0.3117                       \\ \hline
+				                                        & Lemmas F1\_Score \\
+                                                        & \\ \hline
+				            Text shards & 0.3117                       \\ \hline
 			            \end{tabular}
 		            }
 	      \end{enumerate}
@@ -350,11 +351,11 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 	\item Subtask 2 (Multiclass Classification)
 
 	      \begin{enumerate}
-		      \item Bert-link models approach for classification across 7 classes. In the table it
+		      \item Bert models approach for classification across 7 classes. In the table it
                       can be seen that the models can easily two of the categories,
                       while the rest of them are not learned
 
-		            \scalebox{0.5}{
+		            \scalebox{0.7}{
 			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
 				            \hline
 				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
@@ -368,7 +369,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
                             \hline
 			            \end{tabular}
 		            }
-		            \scalebox{0.5}{
+		            \scalebox{0.7}{
 			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
 				            \hline
 				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
@@ -405,7 +406,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
                             \end{tabular}
                         }
 
-                        \scalebox{0.8}{
+                        \scalebox{0.7}{
                             \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
                                 \hline
                                  & \multicolumn{3}{|c|}{F1 Score}\\
@@ -423,7 +424,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
                             \end{tabular}
                         }
 
-                        \scalebox{0.8}{
+                        \scalebox{0.7}{
                             \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
                                 \hline
                                  & \multicolumn{4}{|c|}{F1 Score}\\
@@ -463,6 +464,9 @@ Some recommendations for future work could be to have a better approach and intr
 more linguistic insignt in the approach.
 
 \section*{Acknowledgements}
+
+We would like to thank our supervisor Ana-Sabina Uban for the guidance and throughout
+the development of the project.
 
 
 
