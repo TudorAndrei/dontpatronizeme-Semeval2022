@@ -17,32 +17,36 @@
 	Classification of Patronizing and Condescending Language}
 
 \author{Raluca Andreea G\^inga, {\bf Bogdan Dobre},  \\  {\bf Tudor-Andrei Dumitra\c{s}cu} \and {\bf Bogdan Radu Silviu Sielecki}\\
-    University of Bucharest \\
+University of Bucharest \\
 \texttt{\{gingaraluca, dobrebogdan98, }\\
 \texttt{tudorandrei.dumitrascu, sieleckiradu\}@gmail.com }
 }
 
 
+% TODO: These need to be fixed.
+% Please add proper citations to all models used (Word2Vec should be Mikolov et al., 2013 - also please specify if you used CBOW or SkipGram-, LSTMs should be Hochreiter, S., & Schmidhuber 1997, etc), and software (provide link and/or citation for the transformers library*)
+% Please add more details on the speech dataset you collected and the motivation behind this.
+% Please add captions for results tables, and at least a brief discussion of the results. Given that in this paper there is a significant amount of work, results and systems compared, it would benefit the authors to provide a discussion section so other readers can learn from this work.
+
 \begin{document}
 \maketitle
 
 \begin{abstract}
-	This report is part of the SemEval 2022 Workshop, Task 4 - Patronizing and
-	Condescending Language Detection, trying to find out Patronizing and
-	Condescendending Language in any form of text. There were used many methods,
-	varying from simple Machine Learning algorithms applied on bag of words
-	embeddings until Bert Embeddings and using Neural Networks in order to solve
-	both the binary classification and multi-label classification as well.
+	This paper details our implementations for finding Patronizing and
+	Condescending Language in texts, as part of the SemEval Workshop Task 4.
+	We have used a variety of methods from simple machine learning algorithms applied
+	on bag of words, all the way to BERT models, in order to solve the binary classification
+	and the multi-label multi-class classification.
 \end{abstract}
 
 \section{Introduction}
 
 The Patronizing and Condescending Language Detection Task \cite{perezalmendros2022semeval} is based on the
-paper Don't Patronize Me! An annotated Dataset with Patronizing and
-Condescending Language Towards Vulnerable Communities \cite{perezalmendros2020dont}.
+paper Don't Patronize Me! \cite{perezalmendros2020dont}, which is an annotated Dataset with Patronizing and
+Condescending Language Towards Vulnerable Communities.
 
-The aim of this task is to identify PCL, and to categorize the linguistic
-techniques used to express it, specifically when referring to communities
+The aim of this task is to identify PCL, and to categorize the language
+used to express it, specifically when referring to communities
 identified as being vulnerable to unfair treatment in the media.
 
 Participants were provided with sentences in context (paragraphs), extracted
@@ -54,16 +58,16 @@ communities are mentioned. The challenge is divided into two subtasks.
 	      predict whether or not it contains any form of PCL.
 
 	\item Subtask 2: Given a paragraph, a system must identify which PCL
-	      categories express the condescension. The PCL taxonomy has been defined
+	      categories express the condescension. The PCL taxonomy was defined
 	      based on previous works on PCL (i.g. Unbalanced power relations, Shallow
-          solution, Presupposition, Authority voice, Metaphor, Compassion, The poorer,
-          the merrier. )
+	      solution, Presupposition, Authority voice, Metaphor, Compassion, The poorer,
+	      the merrier. )
 \end{enumerate}
 
 
 \section{Background}
 
-The dataset used for this SemEval 2022 task was Don't Patronize Me! dataset,
+The dataset used for this SemEval 2022 task was Don't Patronize Me! \cite{perezalmendros2020dont},
 which contains a suite of sentences that mention some vulnerable communities
 and published in media in a lot of English speaking countries. The
 paragraphs were manually annotated to show 1) whether the text contains any
@@ -75,11 +79,12 @@ The dataset for subtask 1 (binary classification) contained a number of
 classification subtask.
 
 In Figure \ref{fig1}, it can be seen that for the first subtask, there are almost
-1000 of texts that contain PCL. That means we're dealing with imbalanced
-data that we need to solve it. In the next 3 figures (\ref{fig2}, \ref{fig3}
-, \ref{fig4}), it could be noticed the distribution of the most common words
-both in the full dataset, but in texts that contain/don't contain PCL as
-well.
+1000 texts that contain PCL. This means that the dataset is highly imbalanced and needs to be addressed.
+The next three figures (\ref{fig2},\ref{fig3},\ref{fig4}) display the distribution
+of the most common words, both for the full dataset and for those texts that contain
+/ do not contain PCL.
+
+% TODO: Remove the photos if we're not mentioning or discussing them
 
 \begin{figure}[ht]
 	\centering
@@ -110,7 +115,7 @@ well.
 \end{figure}
 
 
-For taks 2, the paragraphs from task 1 are split according to the type of PCL speech category into sentences, resulting in 950 samples.
+For task 2, the paragraphs from task 1 are split according to the type of PCL speech category into sentences, resulting in 950 samples.
 
 \section{System Overview}
 
@@ -126,12 +131,12 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		            computed a metric in which we obtained a class weight according to the
 		            imbalance of the dataset. Through this method, we gave some different
 		            weights to both the majority and minority classes. This whole process had
-		            the purpose to penalize the misclassification made by the minority class by
+		            the purpose to penalize the miss classification made by the minority class by
 		            setting a higher class weight and at the same time, reducing the weight for
 		            the majority class.
 
 		      \item Using oversampling methods and special ensemble techniques. In this
-		            approach, there were used methods like SMOTE (Synthetic Minority
+		            approach, we used methods like SMOTE (Synthetic Minority
 		            Over-sampling Technique), Adasyn (Adaptive Synthetic), SVM-SMOTE and self
 		            paced ensemble that performs strictly balanced under-sampling in each
 		            iteration, being very efficient computationally.
@@ -139,8 +144,8 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		      \item Augmenting the data. Because we notice so little data for label 1, we
 		            decided to collect hate speech datasets and add the positive texts into our
 		            dataset in order to balance the classes frequency, obtaining a total of 6372
-		            from 795 initial texts with label 1. We'll notice in the results section
-		            that this collection and generation of new dataset didn't provide good
+		            from 795 initial texts with label 1. We will notice in the results section
+		            that this collection and generation of new dataset did not provide good
 		            results.
 	      \end{itemize}
 
@@ -149,23 +154,22 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 	      datasets were generated in order to make some comparison between those two
 	      techniques and to see which provided the best results.
 
-	      As feature extraction techniques, there were used techniques like Bag of
-	      Words, Tokenizer, Word2Vec and, finally, BertTokenizer which provided the
-	      best results in the end.
+	      To extract features from text, we have used Bag of
+	      Words, Tokenizer, Word2Vec and, finally, BertTokenizer.
 
-	      As models, there were used Neural Networks with 3 dense layers, Long Short
+	      We have also used a variety of models such as Neural Networks with 3 dense layers, Long Short
 	      Term Memory (LSTM) with 64 and 128 neurons with dropout as well, basic
 	      Machine Learning algorithms like Logistic Regression, Random Forest, Support
 	      Vector Machines as XGBoost. In the end, we decided to try BERT embeddings
-	      and a classification BERT model, BertForSequenceClassification, that
+	      and a BERT classification model, BertForSequenceClassification, that
 	      contains a single linear classification layer on top and that provided the
 	      best results after all of the other approaches.
 
 	      Another approach, called "Text shards" made use of the subtask related to
-	      multiclass classification as well. For an average text that contains PCL,
+	      multi-class classification as well. For an average text that contains PCL,
 	      only some small pieces of them are actually PCL and the rest of the text are
-	      not. The assumption is that this confuses the model, because a a combination
-	      of pcl and non pcl is labeled as PCL. To address this, the following
+	      not. The assumption is that this confuses the model, because a combination
+	      of PCL and non-PCL is labeled as PCL. To address this, the following
 	      approach is used:
 
 	      \begin{itemize}
@@ -196,7 +200,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 	      Considering the fact that the vocabulary of the is English is large,
 	      we have tried to leverage the power of pretrained language models.
-	      Therefore we have chosen 3 bert-based models which were pretrained
+	      Therefore we have chosen 3 BERT-based models which were pretrained
 	      for hate speech detection and sentiment analysis. The BERT models
 	      also provided a tokenizer which split the sentences into tokens and
 	      appended the required tokens.
@@ -209,11 +213,11 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		      \item BERT HateXplain \cite{mathew2020hatexplain}: This model was trained to classify text as Hate speech, Offensive or Normal.
 		            It was trained on Gab, Twitter and Humain Rationale;
 
-		      \item Distil BERT : This model is a version of Distilled bert finetuned on the Twitter dataset;
+		      \item Distil BERT : This model is a version of Distilled BERT finetuned on the Twitter dataset;
 
 		      \item Distil BERT Multilingual Cased \cite{DistilBERT}
 
-		      \item Distill RoBERTa : This model is a verion of Distilled RoBERTa finetuned on the Twitter dataset;
+		      \item Distill RoBERTa : This model is a version of Distilled RoBERTa finetuned on the Twitter dataset;
 	      \end{itemize}
 
 	      In the paper describing the dataset \cite{perezalmendros2020dont},
@@ -233,7 +237,7 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 	      Then these learned features can be used when training the model to
 	      predict the required 7 sub-classes.
 
-	      Along with those bert-based model, we also tried to implement models based on Word2Vec\cite{goldberg2014word2vec}
+	      Along with those BERT-based model, we also tried to implement models based on Word2Vec\cite{goldberg2014word2vec}
 	      trained on "Google News" and Machine Learning algorithms based on TF-IDF and BOW:
 
 	      \begin{itemize}
@@ -258,6 +262,8 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 \section{Results}
 
 \begin{enumerate}
+
+	% TODO: Re Write the tables
 	\item Subtask 1 (Binary Classification)
 
 	      \begin{enumerate}
@@ -341,127 +347,129 @@ For taks 2, the paragraphs from task 1 are split according to the type of PCL sp
 		            \scalebox{0.55}{
 			            \begin{tabular}[t]{|l|l|}
 				            \hline
-				                                        & Lemmas F1\_Score \\
-                                                        & \\ \hline
-				            Text shards & 0.3117                       \\ \hline
+				                        & Lemmas F1\_Score \\
+				                        &                  \\ \hline
+				            Text shards & 0.3117           \\ \hline
 			            \end{tabular}
 		            }
 	      \end{enumerate}
 
-	\item Subtask 2 (Multiclass Classification)
+	\item Subtask 2 (Multi-class Classification)
 
 	      \begin{enumerate}
-		      \item Bert models approach for classification across 7 classes. In the table it
-                      can be seen that the models can easily two of the categories,
-                      while the rest of them are not learned
+              % TODO:  rephrase
+		      \item BERT models approach for classification across 7 classes. In the table it
+		            can be seen that the models can easily two of the categories,
+		            while the rest of them are not learned
 
 		            \scalebox{0.7}{
 			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
 				            \hline
-				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
-				            Class      & Unb& Sha  & Pre  & Aut
+				                          & \multicolumn{4}{|c|}{F1 Score}                   \\ \hline
+				            Class         & Unb                            & Sha & Pre & Aut
 				            \\ \hline
-				            Bert          & 0.82 & 0.0 & 0.0 & 0.0
+				            BERT          & 0.82                           & 0.0 & 0.0 & 0.0
 				            \\ \hline
-				            DistilRoberta & 0.83 & 0.0 & 0.0 & 0.0   \\
+				            DistilRoBERTa & 0.83                           & 0.0 & 0.0 & 0.0 \\
 				            \hline
-				            Distilbert    & 0.82 & 0.0 & 0.0 & 0.0   \\
-                            \hline
+				            DistilBERT    & 0.82                           & 0.0 & 0.0 & 0.0 \\
+				            \hline
 			            \end{tabular}
 		            }
 		            \scalebox{0.7}{
 			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
 				            \hline
 				                          & \multicolumn{4}{|c|}{F1 Score}                            \\ \hline
-                            Class      & Met & Com  & Mer  & Mean Score
+				            Class         & Met                            & Com  & Mer  & Mean Score
 				            \\ \hline
-                            Bert          & 0.0  & 0.0  & 0.64 & 0.21
+				            BERT          & 0.0                            & 0.0  & 0.64 & 0.21
 				            \\ \hline
-                            DistilRoberta & 0.0  & 0.0  & 0.59 & 0.20    \\
+				            DistilRoBERTa & 0.0                            & 0.0  & 0.59 & 0.20       \\
 				            \hline
-                            Distilbert    & 0.66 & 0.08 & 0.0  & 0.34   \\
-                            \hline
+				            DistilBERT    & 0.66                           & 0.08 & 0.0  & 0.34       \\
+				            \hline
 			            \end{tabular}
 		            }
-                \item The general class aproach is detailed in the following tables.
-                    It shows that the general classes were learned, but when using the
-                    pretrained models and fine-tuning on the specific classes, some
-                    of previously learned features are lost.
+		      \item The general class approach is detailed in the following tables.
+		            It shows that the general classes were learned, but when using the
+		            pretrained models and fine-tuning on the specific classes, some
+		            of previously learned features are lost.
 
-                        \scalebox{0.8}{
-                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
-                                \hline
-                                 & \multicolumn{3}{|c|}{F1 Score}\\
-                                \hline
-                                Main/Sub-classes& Expert & Aut  & Pre \\
-                                \hline
-                                Bert          & 0.44  & 0.0  & 0.0 \\
-                                \hline
-                                DistilRoberta & 0.54  & 0.0  & 0.0 \\
-                                \hline
-                                DistilBert    & 0.42 & 0.0 & 0.40  \\
-                                \hline
-                                DistilBertMLC & 0.36 & 0.0 & 0.0  \\
-                                \hline
-                            \end{tabular}
-                        }
+		            \scalebox{0.8}{
+			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+				            \hline
+				                             & \multicolumn{3}{|c|}{F1 Score}              \\
+				            \hline
+				            Main/Sub-classes & Expert                         & Aut & Pre  \\
+				            \hline
+				            BERT             & 0.44                           & 0.0 & 0.0  \\
+				            \hline
+				            DistilRoBERTa    & 0.54                           & 0.0 & 0.0  \\
+				            \hline
+				            DistilBERT       & 0.42                           & 0.0 & 0.40 \\
+				            \hline
+				            DistilBERTMLC    & 0.36                           & 0.0 & 0.0  \\
+				            \hline
+			            \end{tabular}
+		            }
 
-                        \scalebox{0.7}{
-                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
-                                \hline
-                                 & \multicolumn{3}{|c|}{F1 Score}\\
-                                \hline
-                                Main/Sub-classes& Saviour & Sha  & Unb \\
-                                \hline
-                                Bert          & 0.85 & 0.0 & 0.84 \\
-                                \hline
-                                DistilRoberta & 0.85 & 0.0 & 0.84 \\
-                                \hline
-                                DistilBert    & 0.75 & 0.0 & 0.81  \\
-                                \hline
-                                DistilBertMLC & 0.86 & 0.0 & 0.83  \\
-                                \hline
-                            \end{tabular}
-                        }
+		            \scalebox{0.7}{
+			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+				            \hline
+				                             & \multicolumn{3}{|c|}{F1 Score}              \\
+				            \hline
+				            Main/Sub-classes & Saviour                        & Sha & Unb  \\
+				            \hline
+				            BERT             & 0.85                           & 0.0 & 0.84 \\
+				            \hline
+				            DistilRoBERTa    & 0.85                           & 0.0 & 0.84 \\
+				            \hline
+				            DistilBERT       & 0.75                           & 0.0 & 0.81 \\
+				            \hline
+				            DistilBERTMLC    & 0.86                           & 0.0 & 0.83 \\
+				            \hline
+			            \end{tabular}
+		            }
 
-                        \scalebox{0.7}{
-                            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
-                                \hline
-                                 & \multicolumn{4}{|c|}{F1 Score}\\
-                                \hline
-                                Main/Sub-classes& Poet & Com  & Mer & Met \\
-                                \hline
-                                Bert          & 0.69 & 0.0 & 0.0 & 0.59 \\
-                                \hline
-                                DistilRoberta & 0.69 & 0.11 & 0.0 & 0.65 \\
-                                \hline
-                                DistilBert    & 0.61 & 0.0 & 0.0 & 0.67  \\
-                                \hline
-                                DistilBertMLC & 0.60 & 0.0 & 0.0 & 0.52  \\
-                                \hline
-                            \end{tabular}
-                        }
+		            \scalebox{0.7}{
+			            \begin{tabular}[t]{|l|l|l|l|l|l|l|l|l|}
+				            \hline
+				                             & \multicolumn{4}{|c|}{F1 Score}                     \\
+				            \hline
+				            Main/Sub-classes & Poet                           & Com  & Mer & Met  \\
+				            \hline
+				            BERT             & 0.69                           & 0.0  & 0.0 & 0.59 \\
+				            \hline
+				            DistilRoBERTa    & 0.69                           & 0.11 & 0.0 & 0.65 \\
+				            \hline
+				            DistilBERT       & 0.61                           & 0.0  & 0.0 & 0.67 \\
+				            \hline
+				            DistilBERTMLC    & 0.60                           & 0.0  & 0.0 & 0.52 \\
+				            \hline
+			            \end{tabular}
+		            }
 	      \end{enumerate}
 \end{enumerate}
 
 
 \section{Conclusion}
 
+% TODO: Draw conclusions
 In the current project, it was solved the problem posed by SemEval 2022 Task
 4: Patronizing and Condescending Language Detection. There were applied
-various methods, including the application of Word Embeddings (Bag of Words,
+various methods, including the application of Word Embedings (Bag of Words,
 Word2Vec, BERT), tokenization, oversampling/undersampling of the datasets.
 
 In the binary classification problem, the approach that gave the best result
-on the validation dataset was BERT transformers combined with Bert for
+on the validation dataset was BERT transformers combined with BERT for
 Sequence Classification, obtaining 0.50 as f1\_score.
 
 In the multi classification multi label task, the number of labels proved to
 be a challenge. The results overall are low and the models are only able to learn
-only a few classes. The general class approach also proved to be inneficient.
+only a few classes. The general class approach also proved to be inefficient.
 
 Some recommendations for future work could be to have a better approach and introduce
-more linguistic insignt in the approach.
+more linguistic insight in the approach.
 
 \section*{Acknowledgements}
 
@@ -471,5 +479,6 @@ the development of the project.
 
 
 \bibliography{custom}
-\end{document}
 
+% TODO: Appendix with hparams and hparams search maybe?
+\end{document}
