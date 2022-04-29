@@ -13,7 +13,6 @@
 
 
 
-
 \title{University of Bucharest Team at Semeval-2022 Task4: Detection and
 	Classification of Patronizing and Condescending Language}
 
@@ -130,7 +129,7 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
 	      Term Memory (LSTM) \cite{hichreichter} with 64 and 128 neurons with dropout of 0.1 as well, basic
 	      Machine Learning algorithms like Logistic Regression, Random Forest, Support
 	      Vector Machines as XGBoost. In the end, we decided to try BERT embeddings
-	      and a BERT classification model, BertForSequenceClassification\footnote{\href{https://huggingface.co/docs/transformers/model_doc/bert#transformers.BertForSequenceClassification}{Bert for Sequence Classification}}, that
+	      and a BERT classification model, BertForSequenceClassification \footnote{\href{https://huggingface.co/docs/transformers/model_doc/bert\#transformers.BertForSequenceClassification}{Bert for Sequence Classification}}, that
 	      contains a single linear classification layer on top and that provided the
 	      best results after all of the other approaches.
 
@@ -233,147 +232,212 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 \section{Results}
 
+
+\begin{table*}\small
+	\centering
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{lcccc}
+			\hline \textbf{Approach $\backslash$ Dataset} & Simple        & SPE  & SMOTE         & SVM-SMOTE     \\ \hline
+			Neural Networks                               & 0.27          & -    & 0.2823        & 0.3187        \\
+			Logistic Regression                           & \textbf{0.34} & -    & \textbf{0.35} & \textbf{0.35} \\
+			Random Forest                                 & 0.067         & 0.31 & 0.19          & 0.16          \\
+			Support Vector Machines                       & 0.27          & -    & 0.10          & 0.14          \\
+			XGBoost                                       & 0.15          & -    & 0.23          & 0.24          \\
+			\hline
+		\end{tabular}
+		\caption{Results on Imbalanced and Oversampled Lemmatized dataset}
+	\end{subtable}
+	\bigskip
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{lcccc}
+			\hline \textbf{Approach $\backslash$ Dataset} & Simple        & SPE  & SMOTE         & SVM-SMOTE     \\ \hline
+			Neural Networks                               & 0.2698        & -    & 0.289         & 0.3166        \\
+			Logistic Regression                           & \textbf{0.35} & -    & \textbf{0.38} & \textbf{0.37} \\
+			Random Forest                                 & 0.038         & 0.31 & 0.21          & 0.13          \\
+			Support Vector Machines                       & 0.27          & -    & 0.14          & 0.20          \\
+			XGBoost                                       & 0.17          & -    & 0.23          & 0.24          \\
+			\hline
+		\end{tabular}
+		\caption{Results on Imbalanced and Oversampled Stemmed dataset}
+	\end{subtable}
+	\caption{ Results on Imbalanced and Oversampled Lemmatized \& Stemmed dataset. The results are in terms of \textit{f1\_score}. }
+	\label{table1}
+\end{table*}
+
+\begin{table}\small
+	\centering
+	\begin{tabular}{lrl}
+		\hline \textbf{Approach $\backslash$ Dataset} & Augmented dataset \\ \hline
+		Neural Networks                               & 0.2155            \\
+		Logistic Regression                           & 0.23              \\
+		U.S.E. + 2 dense layers                       & \textbf{0.2316}   \\
+		\hline
+	\end{tabular}
+	\caption{\label{table3} Results on Augmented dataset. }
+\end{table}
+
+\begin{table*}\small
+	\centering
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{lcc}
+			\hline \textbf{Approach $\backslash$ Dataset} & Keras Tokenizer & Word2Vec \\ \hline
+			LSTM (64 neurons)                             & \textbf{0.2693} & 0.2109   \\
+			LSTM (128 neurons)                            & \textbf{0.2317} & 0.2308   \\
+			\hline
+		\end{tabular}
+		\caption{Results on Lemmatized dataset with class weight}
+	\end{subtable}
+	\bigskip
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{lrl}
+			\hline \textbf{Approach $\backslash$ Dataset} & Keras Tokenizer & Word2Vec        \\ \hline
+			LSTM (64 neurons)                             & \textbf{0.3213} & \textbf{0.2093} \\
+			LSTM (128 neurons)                            & 0.2789          & 0.2412          \\
+			\hline
+		\end{tabular}
+		\caption{Results on Stemmed dataset with class weight}
+	\end{subtable}
+	\caption{\label{table2} Results on Lemmatized \& Stemmed datasets using Keras Tokenizer and Word2Vec as word embeddings. The results are in terms of \textit{f1\_score}. }
+\end{table*}
+
+\begin{table*}\small
+	\centering
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{lcccccccc}
+			\hline \textbf{Model $\backslash$ Class} & Unb  & Sha & Pre & Aut & Met  & Com  & Mer  & Mean \\ \hline
+			BERT                                     & 0.82 & 0.0 & 0.0 & 0.0 & 0.0  & 0.0  & 0.64 & 0.21 \\
+			DistilRoBERTa                            & 0.83 & 0.0 & 0.0 & 0.0 & 0.0  & 0.0  & 0.59 & 0.20 \\
+			DistilBERT                               & 0.82 & 0.0 & 0.0 & 0.0 & 0.66 & 0.08 & 0.0  & \textbf{0.34} \\
+			\hline
+		\end{tabular}
+		\caption{Results of transformers trained directly on 7 classes}
+		\label{tab:7class}
+	\end{subtable}
+	\bigskip
+	\begin{subtable}{1\textwidth}
+		\begin{tabular}{lccccccccccc}
+			\hline \textbf{Model $\backslash$ Sub-classes} & \textit{Expert} & Aut & Pre  & \textit{Saviour} & Sha & Unb  & \textit{Poet} & Com  & Mer & Met  & Mean \\ \hline
+			BERT                                           & 0.44            & 0.0 & 0.0  & 0.85             & 0.0 & 0.84 & 0.69          & 0.0  & 0.0 & 0.59 & 0.20 \\
+			DistilRoBERTa                                  & 0.54            & 0.0 & 0.0  & 0.85             & 0.0 & 0.84 & 0.69          & 0.11 & 0.0 & 0.65 & 0.22 \\
+            DistilBERT                                     & 0.42            & 0.0 & 0.40 & 0.75             & 0.0 & 0.81 & 0.61          & 0.0  & 0.0 & 0.67 & \textbf{0.26} \\
+			DistilBERTMLC                                  & 0.36            & 0.0 & 0.0  & 0.86             & 0.0 & 0.83 & 0.60          & 0.0  & 0.0 & 0.52 & 0.19 \\
+			\hline
+		\end{tabular}
+		\caption{Results of transformers that were trained on 3 general classes, then finetuned for the desired 7 classes}
+		\label{tab:3class}
+	\end{subtable}
+	\caption{Transformer Results}
+	\label{table:multi-task}
+\end{table*}
+
 \begin{enumerate}
 
 	\item Subtask 1 (Binary Classification)
-	
-        Since we experimented with various techniques and approaches, we decided to split the results based on the experiments made.
-        
+
+	      Since we experimented with various techniques and approaches, we decided to split the results based on the experiments made.
+
 	      \begin{enumerate}
 		      \item Deep Learning / Machine Learning for Imbalanced and Oversampled dataset
-		      \\
-		      In table \ref{table1}, we can notice the results provided by classical Machine Learning algorithms and 3-layer Neural Networks (512, 256 and 128 layers with relu activation and using class weight for providing accurate performance in terms of data imbalance) on 4 types of datasets: the original dataset (without proceeding to class balance, but using class weights for controlling the class weights), Random Forest with Self-Paced Ensemble Bootstrap technique (SPE), SMOTE and SVM-SMOTE.
-		      
-		      Logistic Regression gave solid results on all variations of the datasets, providing an \textit{f1\_score} of 0.35 on lemmatized dataset and 0.38 on stemmed validation dataset. Neural Networks provided as well good results, but did not manage to obtain the performance of Logistic Regression. We could infer from the tables that Logistic Regression gave the best performance on stemmed dataset.
-		      
-	
-		        \begin{table*}
-        \centering
-        \caption{\label{table1} Results on Imbalanced and Oversampled Lemmatized \& Stemmed dataset. The results are in terms of \textit{f1\_score}. }
-        \subcaption*{Results on Imbalanced and Oversampled Lemmatized dataset}
-        \begin{tabular}{lrrrl}
-        \hline \textbf{Approach $\backslash$ Dataset} & Simple & SPE & SMOTE & SVM-SMOTE\\ \hline
-        Neural Networks & 0.27 & - & 0.2823 & 0.3187 \\
-        Logistic Regression & \textbf{0.34} & - & \textbf{0.35} & \textbf{0.35} \\
-        Random Forest & 0.067 & 0.31 & 0.19 & 0.16 \\
-        Support Vector Machines & 0.27 & - & 0.10 & 0.14 \\
-        XGBoost & 0.15 & - & 0.23 & 0.24 \\
-        \hline
-        \end{tabular}
-        \bigskip
-        \subcaption*{Results on Imbalanced and Oversampled Stemmed dataset}
-        \begin{tabular}{lrrrl}
-        \hline \textbf{Approach $\backslash$ Dataset} & Simple & SPE & SMOTE & SVM-SMOTE\\ \hline
-        Neural Networks & 0.2698 & - & 0.289 & 0.3166 \\
-		Logistic Regression & \textbf{0.35} & - & \textbf{0.38} & \textbf{0.37} \\
-		Random Forest & 0.038 & 0.31 & 0.21  & 0.13 \\
-        Support Vector Machines & 0.27 & - & 0.14 & 0.20 \\
-		XGBoost & 0.17 & - & 0.23 & 0.24 \\
-        \hline
-        \end{tabular}
-        
-        \end{table*}
+		            \\
+		            In table \ref{table1}, we can notice the results provided
+		            by classical Machine Learning algorithms and 3-layer Neural
+		            Networks (512, 256 and 128 layers with relu activation and
+		            using class weight for providing accurate performance in
+		            terms of data imbalance) on 4 types of datasets: the
+		            original dataset (without proceeding to class balance, but
+		            using class weights for controlling the class weights),
+		            Random Forest with Self-Paced Ensemble Bootstrap technique
+		            (SPE), SMOTE and SVM-SMOTE.
 
-		            
+		            Logistic Regression gave solid results on all variations of
+		            the datasets, providing an \textit{f1\_score} of 0.35 on
+		            lemmatized dataset and 0.38 on stemmed validation dataset.
+		            Neural Networks provided as well good results, but did not
+		            manage to obtain the performance of Logistic Regression. We
+		            could infer from the tables that Logistic Regression gave
+		            the best performance on stemmed dataset.
+
+
+
+
 
 		      \item Keras Tokenizer \& Word2Vec Embeddings + LSTM
 		            neural network
-		            
-		            Another experiment that we conducted was the use of Keras Tokenizer and Word2Vec in order to extract the embeddings from the texts. We then applied two LSTM models: one with 64 neurons and the other one with 128 neurons.
-		            
-		            The results of these two models on both Lemmatized \& Stemmed datasets with two variations of created embeddings (Keras Tokenizer and Word2Vec) are provided in table \ref{table2}. LSTM with 64 neurons provided best results on the datasets that were using the default Tokenizer from Keras, with an f1\_score of almost 27\% on Lemmatized dataset and 32\& on Stemmed dataset. Word2Vec did not seem to provide good results in combination with LSTM networks.
-		            
-		            \begin{table*}
-        \centering
-        \caption{\label{table2} Results on Lemmatized \& Stemmed datasets using Keras Tokenizer and Word2Vec as word embeddings. The results are in terms of \textit{f1\_score}. }
-        \subcaption*{Results on Lemmatized dataset with class weight}
-        \begin{tabular}{lrl}
-        \hline \textbf{Approach $\backslash$ Dataset} & Keras Tokenizer & Word2Vec\\ \hline
-        LSTM (64 neurons) & \textbf{0.2693} & 0.2109\\
-        LSTM (128 neurons) & \textbf{0.2317} & 0.2308 \\
-        \hline
-        \end{tabular}
-        \bigskip
-        \subcaption*{Results on Stemmed dataset with class weight}
-        \begin{tabular}{lrl}
-        \hline \textbf{Approach $\backslash$ Dataset} & Keras Tokenizer & Word2Vec\\ \hline
-        LSTM (64 neurons) & \textbf{0.3213} & \textbf{0.2093}\\
-        LSTM (128 neurons) & 0.2789 & 0.2412 \\
-        \hline
-        \end{tabular}
-        
-        \end{table*}
+
+		            Another experiment that we conducted was the use of Keras
+		            Tokenizer and Word2Vec in order to extract the embeddings
+		            from the texts. We then applied two LSTM models: one with
+		            64 neurons and the other one with 128 neurons.
+
+		            The results of these two models on both Lemmatized \&
+		            Stemmed datasets with two variations of created embeddings
+		            (Keras Tokenizer and Word2Vec) are provided in table
+		            \ref{table2}. LSTM with 64 neurons provided best results on
+		            the datasets that were using the default Tokenizer from
+		            Keras, with an f1\_score of almost 27\% on Lemmatized
+		            dataset and 32\& on Stemmed dataset. Word2Vec did not seem
+		            to provide good results in combination with LSTM networks.
+
 
 
 		      \item Data augmentation
-		      
-		      As we discussed in the previous section, we augmented the data by using the positive texts from different hate speech datasets from Kaggle and adding to our dataset. We then applied TF-IDF vectorizer with 5000 features and fed the embeddings into a 3-layer Neural Network (512, 256 and 128 neurons) and to a Logistic Regression model. Another method used was Universal Sentence Encoder (U.S.E. annotated in table) + 2 dense layers of 128 and 64 neurons.
-		      
-		      The results are present in table \ref{table3}. We can infer that the third method provided the best results, but still insufficient to reach the level and performance of Logistic Regression from (a).
-		      
-		      \begin{table}
-                \centering
-                \begin{tabular}{lrl}
-                \hline \textbf{Approach $\backslash$ Dataset} & Augmented dataset \\ \hline
-                Neural Networks & 0.2155 \\
-                Logistic Regression & 0.23 \\
-                U.S.E. + 2 dense layers & \textbf{0.2316} \\
-                \hline
-                \end{tabular}
-                \caption{\label{table3} Results on Augmented dataset. }
-            \end{table}
+
+		            As we discussed in the previous section, we augmented the
+		            data by using the positive texts from different hate speech
+		            datasets from Kaggle and adding to our dataset. We then
+		            applied TF-IDF vectorizer with 5000 features and fed the
+		            embeddings into a 3-layer Neural Network (512, 256 and 128
+		            neurons) and to a Logistic Regression model. Another method
+		            used was Universal Sentence Encoder (U.S.E. annotated in
+		            table) + 2 dense layers of 128 and 64 neurons.
+
+		            The results are present in table \ref{table3}. We can infer
+		            that the third method provided the best results, but still
+		            insufficient to reach the level and performance of Logistic
+		            Regression from (a).
 
 
 		      \item BERT Transformers + BertForSequenceClassification
-                
-                For Bert Transformers, we obtained a performance of \textbf{0.5074}, the best result provided among all of the other models and techniques. This performance was obtained by using Bert Tokenizer for encoding the entire texts, calculating the class weight and providing it to a BERT-base-uncased model with AdamW as optimizer (learning rate of $2e-5$) and 3 epochs for training. The total training time took 2 hours.
-		      
+
+		            For Bert Transformers, we obtained a performance of
+		            \textbf{0.5074}, the best result provided among all of the
+		            other models and techniques. This performance was obtained
+		            by using Bert Tokenizer for encoding the entire texts,
+		            calculating the class weight and providing it to a
+		            BERT-base-uncased model with AdamW as optimizer (learning
+		            rate of $2e-5$) and 3 epochs for training. The total
+		            training time took 2 hours.
+
 
 		      \item Text shards
-		      
-		        For "Text shards" approach, we obtained an F1 score of 0.3117.
+
+		            For "Text shards" approach, we obtained an F1 score of 0.3117.
 	      \end{enumerate}
-	      
-	      Overall, for the first subtask, we obtained the best performance using BERT Transformers and fine-tuning a BERT model with an F1 score of 0.5074. The second best-performing algorithm was, surprisingly, Logistic Regression, that provided 0.38 on SMOTE oversampled dataset. 
+
+	      Overall, for the first subtask, we obtained the best performance using BERT Transformers and fine-tuning a BERT model with an F1 score of 0.5074. The second best-performing algorithm was, surprisingly, Logistic Regression, that provided 0.38 on SMOTE oversampled dataset.
 
 	\item Subtask 2 (Multi-label Multi-class Classification)
 
 	      \begin{enumerate}
-		      % TODO:  Please explain more the results, bold the best result and so on...
-		      \item BERT models approach for classification across 7 classes.
-                    Table \ref{table4}a) shows that the model was able to learn only two of the classes.
-                    
-                    \begin{table*}
-        \centering
-        \caption{\label{table4} Results on Imbalanced and Oversampled Lemmatized \& Stemmed dataset. The results are in terms of \textit{f1\_score}. }
-        \subcaption*{a) Results on Imbalanced and Oversampled Lemmatized dataset}
-        \begin{tabular}{lrrrrrrrl}
-        \hline \textbf{Model $\backslash$ Class} & Unb & Sha & Pre & Aut & Met & Com & Mer & Mean Score\\ \hline
-        BERT & 0.82 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.64 & 0.21 \\
-        DistilRoBERTa & 0.83 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.59 & 0.20 \\
-        DistilBERT & 0.82 & 0.0 & 0.0 & 0.0 & 0.66 & 0.08 & 0.0 & 0.34\\
-        \hline
-        \end{tabular}
-        \bigskip
-        \subcaption*{b) Results on Imbalanced and Oversampled Lemmatized dataset}
-        \begin{tabular}{lrrrrrrrrrl}
-        \hline \textbf{Model $\backslash$ Sub-classes} & Expert & Aut & Pre & Saviour & Sha & Unb & Poet & Com & Mer & Met\\ \hline
-        BERT & 0.44 & 0.0 & 0.0 & 0.85 & 0.0 & 0.84 & 0.69 & 0.0 & 0.0 & 0.59 \\
-        DistilRoBERTa & 0.54 & 0.0 & 0.0 & 0.85 & 0.0 & 0.84 & 0.69 & 0.11 & 0.0 & 0.65 \\
-        DistilBERT & 0.42 & 0.0 & 0.40 & 0.75 & 0.0 & 0.81 & 0.61 & 0.0 & 0.0 & 0.67\\
-        DistilBERTMLC & 0.36 & 0.0 & 0.0 & 0.86 & 0.0 & 0.83 & 0.60 & 0.0 & 0.0 & 0.52 \\
-        \hline
-        \end{tabular}
-        
-        \end{table*}
+              \item BERT models approach for classification across 7 classes.
+                  Table \ref{tab:7class} shows that the model was able to learn
+                  only two of the classes. The best model, DistilBERT, obtains
+                  F1 score of 0.34.
 
-		            
-		      \item The general class approach is detailed in table \ref{table4}b).
-		            It shows that the general classes were learned, but when using the
-		            pretrained models and fine-tuning on the specific classes, some
-		            of previously learned features are lost.
+              \item The general class approach is detailed in table
+                  \ref{tab:3class}, where the general classes are italicized.
+                  It shows that the general classes were learned, but when
+                  using the pretrained models and fine-tuning on the specific
+                  classes, some of previously learned features are lost. The
+                  bestresults it obtained yet again by the DistilBERT model
+                  with an F1 score of .26.
 
-	
+
 	      \end{enumerate}
 \end{enumerate}
 
@@ -388,13 +452,14 @@ Word2Vec, BERT), tokenization, oversampling/undersampling of the datasets.
 
 In the binary classification problem, the approach that gave the best result
 on the validation dataset was BERT transformers combined with BERT for
-Sequence Classification, obtaining 0.50 as F1 score, followed by Logistic Regression applied on stemmed SMOTE dataset with a performance of 0.38.
+Sequence Classification, obtaining 0.50 as F1 score, followed by Logistic
+Regression applied on stemmed SMOTE dataset with a performance of 0.38.
 
 In the multi classification multi label task, the number of labels proved to
 be a challenge. The results overall are low and the models were only able to learn
 only a few classes. The general class approach also proved to be inefficient.
-
-% TODO: Write about the best result for multi-label classification
+Perhaps a more suitable approach would be to build more complex models and use
+models that do not rely on specific pretrained approaches.
 
 Some recommendations for future work could be to have a better approach and introduce
 more linguistic insight in the approach.
