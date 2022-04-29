@@ -215,7 +215,7 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 	      \begin{itemize}
 		      \item LSTM Word2Vec Embeddings \cite{staudemeyer2019understanding}
-		      \item biLSTM Word2Vec Embeddings \cite{huang2015bidirectional}
+		      \item BiLSTM Word2Vec Embeddings \cite{huang2015bidirectional}
 		      \item RNN Word2Vec Embeddings \cite{rnn}
 		      \item SVM TF-IDF
 		      \item RandomForest TF-IDF
@@ -346,7 +346,7 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
 		            \\
 		            In table \ref{table1}, we can notice the results provided
 		            by classical Machine Learning algorithms and 3-layer Neural
-		            Networks (512, 256 and 128 layers with relu activation and
+		            Networks (512, 256 and 128 layers with ReLU activation and
 		            using class weight for providing accurate performance in
 		            terms of data imbalance) on 4 types of datasets: the
 		            original dataset (without proceeding to class balance, but
@@ -434,7 +434,7 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
                   It shows that the general classes were learned, but when
                   using the pretrained models and fine-tuning on the specific
                   classes, some of previously learned features are lost. The
-                  bestresults it obtained yet again by the DistilBERT model
+                  best results it obtained yet again by the DistilBERT model
                   with an F1 score of .26.
 
 
@@ -444,7 +444,6 @@ For task 2, the paragraphs from task 1 are split according to the type of PCL sp
 
 \section{Conclusion}
 
-% TODO: Draw conclusions
 In this paper, we presented our solution to the problem posed by SemEval 2022 Task
 4: Patronizing and Condescending Language Detection. We applied
 various methods, including the application of Word Embedings (Bag of Words,
